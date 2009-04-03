@@ -25,35 +25,36 @@
  *
  ******************************************************************************/
 
-#include <WIMEMAC--MAIN--0.1/SimulationModel.hpp>
-#include <WNS/node/Node.hpp>
-#include <WNS/osi/PDU.hpp>
+#include <WIMEMAC/WIMEMAC.hpp>
 
-using namespace wimemac--main--0.1;
+using namespace wimemac;
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
-    SimulationModel,
-    wns::simulator::ISimulationModel,
-    "wimemac--main--0.1.SimulationModel",
-    wns::PyConfigViewCreator);
+	WiMeMAC,
+	wns::module::Base,
+	"WIMEMAC",
+	wns::PyConfigViewCreator);
 
-SimulationModel::SimulationModel(const wns::pyconfig::View& config) :
-    logger_(config.get("logger")),
-    config_(config)
+
+WiMeMAC::WiMeMAC(const wns::pyconfig::View& _pyco) :
+	wns::module::Module<WiMeMAC>(_pyco)
 {
 }
 
-SimulationModel::~SimulationModel()
+WiMeMAC::~WiMeMAC()
 {
 }
 
-void
-SimulationModel::doStartup()
+void WiMeMAC::configure()
 {
-    // Your startup code goes here
 }
 
-void
-SimulationModel::doShutdown()
+void WiMeMAC::startUp()
 {
 }
+
+void WiMeMAC::shutDown()
+{
+}
+
+

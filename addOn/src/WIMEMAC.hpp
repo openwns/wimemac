@@ -25,36 +25,33 @@
  *
  ******************************************************************************/
 
-#ifndef WIMEMAC--MAIN--0.1_SIMULATIONMODEL_HPP
-#define WIMEMAC--MAIN--0.1_SIMULATIONMODEL_HPP
+#ifndef WIMEMAC_WIMEMAC_HPP
+#define WIMEMAC_WIMEMAC_HPP
 
-#include <WNS/simulator/ISimulationModel.hpp>
-#include <WNS/logger/Logger.hpp>
-#include <WNS/pyconfig/View.hpp>
+#include <WNS/module/Module.hpp>
 
-namespace wimemac--main--0.1 {
+namespace wimemac
+{
+	class WiMeMAC:
+		public wns::module::Module<WiMeMAC>
+	{
+	public:
+		WiMeMAC(const wns::pyconfig::View& _pyco);
 
-    class SimulationModel :
-        public wns::simulator::ISimulationModel
-    {
-    public:
-        explicit
-        SimulationModel(const wns::pyconfig::View& config);
+		virtual
+		~WiMeMAC();
 
-        virtual
-        ~SimulationModel();
+		// Module interface
+		virtual void
+		configure();
 
-    protected:
-        virtual void
-        doStartup();
+		virtual void
+		startUp();
 
-        virtual void
-        doShutdown();
-
-        wns::logger::Logger logger_;
-
-        wns::pyconfig::View config_;
-    };
+		virtual void
+		shutDown();
+	};
 }
 
-#endif // NOT defined WIMEMAC--MAIN--0.1_SIMULATIONMODEL_HPP
+#endif // NOT defined WIMEMAC--MAIN--0.1_WIMEMAC--MAIN--0.1MODULE_HPP
+
