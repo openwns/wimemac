@@ -28,9 +28,9 @@
 import openwns.module
 import openwns.simulator
 
-class ProjName(openwns.module.Module):
+class WiMeMAC--main--0.1(openwns.module.Module):
     def __init__(self):
-        super(ProjName, self).__init__("projname", "projname")
+        super(WiMeMAC--main--0.1, self).__init__("wimemac--main--0.1", "wimemac--main--0.1")
 
 # add the Module in order to get it loaded
-openwns.simulator.OpenWNS.modules.projname = ProjName()
+openwns.simulator.OpenWNS.modules.wimemac--main--0.1 = WiMeMAC--main--0.1()

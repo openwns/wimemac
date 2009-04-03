@@ -25,33 +25,33 @@
  *
  ******************************************************************************/
 
-#include <PROJNAME/ProjNameModule.hpp>
+#include <WIMEMAC--MAIN--0.1/WiMeMAC--main--0.1Module.hpp>
 
-using namespace projname;
+using namespace wimemac--main--0.1;
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
-	ProjNameModule,
+	WiMeMAC--main--0.1Module,
 	wns::module::Base,
-	"projname",
+	"wimemac--main--0.1",
 	wns::PyConfigViewCreator);
 
-ProjNameModule::ProjNameModule(const wns::pyconfig::View& _pyco) :
-	wns::module::Module<ProjNameModule>(_pyco)
+WiMeMAC--main--0.1Module::WiMeMAC--main--0.1Module(const wns::pyconfig::View& _pyco) :
+	wns::module::Module<WiMeMAC--main--0.1Module>(_pyco)
 {
 }
 
-ProjNameModule::~ProjNameModule()
+WiMeMAC--main--0.1Module::~WiMeMAC--main--0.1Module()
 {
 }
 
-void ProjNameModule::configure()
+void WiMeMAC--main--0.1Module::configure()
 {
 }
 
-void ProjNameModule::startUp()
+void WiMeMAC--main--0.1Module::startUp()
 {
 }
 
-void ProjNameModule::shutDown()
+void WiMeMAC--main--0.1Module::shutDown()
 {
 }

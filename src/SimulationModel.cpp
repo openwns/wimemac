@@ -25,16 +25,16 @@
  *
  ******************************************************************************/
 
-#include <PROJNAME/SimulationModel.hpp>
+#include <WIMEMAC--MAIN--0.1/SimulationModel.hpp>
 #include <WNS/node/Node.hpp>
 #include <WNS/osi/PDU.hpp>
 
-using namespace projname;
+using namespace wimemac--main--0.1;
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
     SimulationModel,
     wns::simulator::ISimulationModel,
-    "projname.SimulationModel",
+    "wimemac--main--0.1.SimulationModel",
     wns::PyConfigViewCreator);
 
 SimulationModel::SimulationModel(const wns::pyconfig::View& config) :

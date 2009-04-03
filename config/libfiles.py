@@ -1,18 +1,18 @@
-libname = 'projname'
+libname = 'wimemac--main--0.1'
 
 srcFiles = [
-    'src/ProjNameModule.cpp',
+    'src/WiMeMAC--main--0.1Module.cpp',
     'src/SimulationModel.cpp',
     ]
 
 hppFiles = [
-    'src/ProjNameModule.hpp',
+    'src/WiMeMAC--main--0.1Module.hpp',
     'src/SimulationModel.hpp',
     ]
 
 pyconfigs = [
-    'projname/__init__.py',
-    'projname/simulationmodel.py',
+    'wimemac--main--0.1/__init__.py',
+    'wimemac--main--0.1/simulationmodel.py',
 ]
 
 dependencies = []

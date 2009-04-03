@@ -25,21 +25,21 @@
  *
  ******************************************************************************/
 
-#ifndef PROJNAME_PROJNAMEMODULE_HPP
-#define PROJNAME_PROJNAMEMODULE_HPP
+#ifndef WIMEMAC--MAIN--0.1_WIMEMAC--MAIN--0.1MODULE_HPP
+#define WIMEMAC--MAIN--0.1_WIMEMAC--MAIN--0.1MODULE_HPP
 
 #include <WNS/module/Module.hpp>
 
-namespace projname
+namespace wimemac--main--0.1
 {
-	class ProjNameModule :
-		public wns::module::Module<ProjNameModule>
+	class WiMeMAC--main--0.1Module :
+		public wns::module::Module<WiMeMAC--main--0.1Module>
 	{
 	public:
-		ProjNameModule(const wns::pyconfig::View& _pyco);
+		WiMeMAC--main--0.1Module(const wns::pyconfig::View& _pyco);
 
 		virtual
-		~ProjNameModule();
+		~WiMeMAC--main--0.1Module();
 
 		// Module interface
 		virtual void
@@ -53,5 +53,5 @@ namespace projname
 	};
 }
 
-#endif // NOT defined PROJNAME_PROJNAMEMODULE_HPP
+#endif // NOT defined WIMEMAC--MAIN--0.1_WIMEMAC--MAIN--0.1MODULE_HPP
 

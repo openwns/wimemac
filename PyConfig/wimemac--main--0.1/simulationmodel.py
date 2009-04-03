@@ -31,5 +31,5 @@ class SimulationModel(object):
     __slots__ = ['nameInFactory', 'logger', 'nodes']
 
     def __init__(self):
-        self.nameInFactory = 'projname.SimulationModel'
-        self.logger = Logger("PROJNAME", "SimulationModel", True)
+        self.nameInFactory = 'wimemac--main--0.1.SimulationModel'
+        self.logger = Logger("WIMEMAC--MAIN--0.1", "SimulationModel", True)
