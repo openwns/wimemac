@@ -18,7 +18,7 @@
 #include <WNS/events/PeriodicTimeout.hpp>
 #include <WNS/logger/Logger.hpp>
 #include <WIMEMAC/frame/BeaconBuilder.hpp>
-#include <WIMEMAC/BeaconScheduler.hpp>
+#include <WIMEMAC/frame/BeaconScheduler.hpp>
 
 
 namespace wimemac {

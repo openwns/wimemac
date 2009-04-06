@@ -11,5 +11,5 @@ class Stamper(wns.Sealed.Sealed):
 class StamperTest(Stamper):
 
     def __init__(self):
-        super(StamperTest, self).__init__(logger = wns.Logger.Logger("GLUE", "Pilot", True),
+        super(StamperTest, self).__init__(logger = wns.Logger.Logger("wimemac", "Pilot", True),
                                           logMessage = "Stamper stamped a compound")

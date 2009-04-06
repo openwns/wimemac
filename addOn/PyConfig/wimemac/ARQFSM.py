@@ -19,18 +19,18 @@ class ARQFSM(Sealed):
         attrsetter(self, kw)
 
 class StopAndWait(ARQFSM):
-    __plugin__ = 'glue.arqfsm.stopandwait.FSMFU'
+    __plugin__ = 'wimemac.arqfsm.stopandwait.FSMFU'
     name = "StopAndWait"
 
     bitsPerIFrame = 2
     bitsPerRRFrame = 2
 
     def __init__(self, parent = None, **kw):
-        self.logger = wns.Logger.Logger("GLUE", "StopAndWait", True, parent)
+        self.logger = wns.Logger.Logger("wimemac", "StopAndWait", True, parent)
         attrsetter(self, kw)
 
 class SelectiveRepeat(ARQFSM):
-    __plugin__ = 'glue.arqfsm.selectiverepeat.FSMFU'
+    __plugin__ = 'wimemac.arqfsm.selectiverepeat.FSMFU'
     name = "SelectiveRepeat"
 
     bitsPerIFrame = 10
@@ -40,5 +40,5 @@ class SelectiveRepeat(ARQFSM):
     sequenceNumberSize = 1024
 
     def __init__(self, parent = None, **kw):
-        self.logger = wns.Logger.Logger("GLUE", "SelectiveRepeat", True, parent)
+        self.logger = wns.Logger.Logger("wimemac", "SelectiveRepeat", True, parent)
         attrsetter(self, kw)

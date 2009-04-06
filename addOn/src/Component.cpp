@@ -10,9 +10,9 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#include <GLUE/Component.hpp>
-#include <GLUE/convergence/Upper.hpp>
-#include <GLUE/convergence/Lower.hpp>
+#include <WIMEMAC/Component.hpp>
+#include <WIMEMAC/convergence/Upper.hpp>
+#include <WIMEMAC/convergence/Lower.hpp>
 
 #include <WNS/service/dll/Handler.hpp>
 
@@ -24,12 +24,12 @@
 
 #include <sstream>
 
-using namespace glue;
+using namespace wimemac;
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
 	Component,
 	wns::node::component::Interface,
-	"glue.Component",
+	"wimemac.Component",
 	wns::node::component::ConfigCreator
 	);
 

@@ -10,9 +10,9 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#include <GLUE/convergence/Lower2Copper.hpp>
-#include <GLUE/convergence/Upper.hpp>
-#include <GLUE/Component.hpp>
+#include <WIMEMAC/convergence/Lower2Copper.hpp>
+#include <WIMEMAC/convergence/Upper.hpp>
+#include <WIMEMAC/Component.hpp>
 
 #include <WNS/ldk/fun/FUN.hpp>
 
@@ -22,12 +22,12 @@
 #include <cstdlib>
 
 
-using namespace glue::convergence;
+using namespace wimemac::convergence;
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
 	Lower2Copper,
 	wns::ldk::FunctionalUnit,
-	"glue.convergence.Lower2Copper",
+	"wimemac.convergence.Lower2Copper",
 	wns::ldk::FUNConfigCreator);
 
 Lower2Copper::Lower2Copper(wns::ldk::fun::FUN* fun, const wns::pyconfig::View& _config) :
@@ -52,11 +52,11 @@ Lower2Copper::~Lower2Copper()
 void Lower2Copper::onFUNCreated()
 {
 	friends.unicastRouting =
-		getFUN()->findFriend<glue::convergence::UnicastUpper*>(
+		getFUN()->findFriend<wimemac::convergence::UnicastUpper*>(
 			config.get<std::string>("unicastRouting"));
 
 	friends.broadcastRouting =
-		getFUN()->findFriend<glue::convergence::BroadcastUpper*>(
+		getFUN()->findFriend<wimemac::convergence::BroadcastUpper*>(
 			config.get<std::string>("broadcastRouting"));
 } // onFUNCreated
 

@@ -3,9 +3,9 @@ import wns.Group
 import wns.Multiplexer
 import wns.Tools
 
-import glue.Reconfiguration
-import glue.InSequenceChecker
-import glue.Routing
+import wimemac.Reconfiguration
+import wimemac.InSequenceChecker
+import wimemac.Routing
 
 class Reconfiguration(wns.Group.Group):
 
@@ -13,10 +13,10 @@ class Reconfiguration(wns.Group.Group):
         wns.Group.Group.__init__(self, wns.FUN.FUN(), "inSequenceChecker", "sync")
 
         # create
-        inSequenceChecker = wns.FUN.Node("inSequenceChecker", glue.InSequenceChecker.InSequenceChecker(loggerEnabled, parentLogger))
+        inSequenceChecker = wns.FUN.Node("inSequenceChecker", wimemac.InSequenceChecker.InSequenceChecker(loggerEnabled, parentLogger))
 
         # control plane
-        reconfigurationManagerFU = glue.Reconfiguration.TransmittingManager(masterRM,
+        reconfigurationManagerFU = wimemac.Reconfiguration.TransmittingManager(masterRM,
                                                                             reconfigurationSchemes,
                                                                             loggerEnabled,
                                                                             parentLogger,
@@ -27,14 +27,14 @@ class Reconfiguration(wns.Group.Group):
             controlCRC = wns.FUN.Node("controlCRC", wns.CRC.CRC(berProvider))
 
         # user plane
-        supportUpper = wns.FUN.Node("supportUpper", glue.Reconfiguration.SupportUpper("reconfigurationManager", loggerEnabled, parentLogger))
+        supportUpper = wns.FUN.Node("supportUpper", wimemac.Reconfiguration.SupportUpper("reconfigurationManager", loggerEnabled, parentLogger))
 
-        drain = wns.FUN.Node("drain", glue.Reconfiguration.Drain(loggerEnabled, parentLogger))
-        supportLower = wns.FUN.Node("supportLower", glue.Reconfiguration.SupportLower("reconfigurationManager", "drain", loggerEnabled, parentLogger))
+        drain = wns.FUN.Node("drain", wimemac.Reconfiguration.Drain(loggerEnabled, parentLogger))
+        supportLower = wns.FUN.Node("supportLower", wimemac.Reconfiguration.SupportLower("reconfigurationManager", "drain", loggerEnabled, parentLogger))
 
         # joined plane
         planeDispatcher = wns.FUN.Node("planeDispatcher", wns.Multiplexer.Dispatcher(1))
-        routing = wns.FUN.Node("routing", glue.Routing.Routing(addressProvider))
+        routing = wns.FUN.Node("routing", wimemac.Routing.Routing(addressProvider))
         sync = wns.FUN.Node("sync", wns.Tools.Synchronizer())
 
 

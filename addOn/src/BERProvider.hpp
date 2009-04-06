@@ -10,12 +10,12 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#ifndef GLUE_BERPROVIDER_HPP
-#define GLUE_BERPROVIDER_HPP
+#ifndef WIMEMAC_BERPROVIDER_HPP
+#define WIMEMAC_BERPROVIDER_HPP
 
 #include <list>
 
-namespace glue {
+namespace wimemac {
 
 	class BERConsumer;
 
@@ -74,7 +74,7 @@ namespace glue {
 		BERConsumerContainer berConsumers;
 	};
 
-} // glue
+} // wimemac
 
 #endif // GLUE_BERPROVIDER_HPP
 

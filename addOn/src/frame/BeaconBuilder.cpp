@@ -8,7 +8,7 @@
  * phone: ++49-241-80-27920 (phone), fax: ++49-241-80-22242                   *
  * email: hor@comnets.de, www: http://wns.comnets.rwth-aachen.de/             *
  *****************************************************************************/
-#include "<WIMEMAC/BeaconBuilder.hpp>
+#include <WIMEMAC/frame/BeaconBuilder.hpp>
 #include <WIMEMAC/convergence/Upper.hpp>
 #include <DLL/Layer2.hpp>
 

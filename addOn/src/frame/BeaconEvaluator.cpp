@@ -12,7 +12,7 @@
 
 
 
-#include <WIMEMAC/BeaconEvaluator.hpp>
+#include <WIMEMAC/frame/BeaconEvaluator.hpp>
 
 
 

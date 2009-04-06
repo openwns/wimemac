@@ -3,27 +3,27 @@ srcFiles = dict()
 
 srcFiles = [
     'src/WIMEMAC.cpp',
-     ##'src/Component.cpp',
+    'src/Component.cpp',
     ##'src/MIHComponent.cpp',
-    ##wimemac
-    #'src/frame/BeaconCollector.cpp',
-    #'src/frame/DataCollector.cpp',
-    #'src/frame/BeaconScheduler.cpp',
-    #'src/frame/BeaconBuilder.cpp',
-    #'src/frame/BeaconEvaluator.cpp',
-    #'src/drp/DRPManager.cpp',
-    #'src/drp/DRPmap.cpp',
-    #'src/helper/Queues.cpp',
-    #'src/drp/DRPScheduler.cpp',
+    #wimemac
+    'src/frame/BeaconCollector.cpp',
+    'src/frame/DataCollector.cpp',
+    'src/frame/BeaconScheduler.cpp',
+    'src/frame/BeaconBuilder.cpp',
+    'src/frame/BeaconEvaluator.cpp',
+    'src/drp/DRPManager.cpp',
+    'src/drp/DRPmap.cpp',
+    'src/helper/Queues.cpp',
+    'src/drp/DRPScheduler.cpp',
     
 
     ## convergence
-    #'src/convergence/Upper.cpp',
+    'src/convergence/Upper.cpp',
     #'src/convergence/Lower2Copper.cpp',
 
     #'src/Routing.cpp',
-    #'src/BERProvider.cpp',
-    #'src/BERConsumer.cpp',
+    'src/BERProvider.cpp',
+    'src/BERConsumer.cpp',
     #'src/BERMeasurementReporting.cpp',
     #'src/Pilot.cpp',
 
@@ -86,20 +86,20 @@ srcFiles = [
 
 hppFiles = [
 
- ##wimemac
- 	'src/WIMEMAC.hpp',
-    #'src/frame/BeaconCollector.hpp',
-    #'src/frame/DataCollector.hpp'
-    #'src/frame/BeaconScheduler.hpp',
-    #'src/frame/BeaconBuilder.hpp', 
-    #'src/frame/BeaconEvaluator.hpp',
-    #'src/drp/DRPManager.hpp',
-    #'src/frame/BeaconCommand.hpp',
-    #'src/drp/DRPmap.hpp',
-    #'src/drp/DRPScheduler.hpp',
-    #'src/helper/Queues.hpp',
-    #'src/helper/IDRPQueueInterface.hpp', 
-    #'src/helper/IQueueInterface.hpp',
+ #wimemac
+    'src/WIMEMAC.hpp',
+    'src/frame/BeaconCollector.hpp',
+    'src/frame/DataCollector.hpp'
+    'src/frame/BeaconScheduler.hpp',
+    'src/frame/BeaconBuilder.hpp', 
+    'src/frame/BeaconEvaluator.hpp',
+    'src/drp/DRPManager.hpp',
+    'src/frame/BeaconCommand.hpp',
+    'src/drp/DRPmap.hpp',
+    'src/drp/DRPScheduler.hpp',
+    'src/helper/Queues.hpp',
+    'src/helper/IDRPQueueInterface.hpp', 
+    'src/helper/IQueueInterface.hpp',
 
 
 #'src/arqfsm/ARQBaseState.hpp',
@@ -117,13 +117,13 @@ hppFiles = [
 #'src/arqfsm/stopandwait/ReadyForTransmission.hpp',
 #'src/arqfsm/stopandwait/tests/StopAndWaitTest.hpp',
 #'src/arqfsm/stopandwait/WaitingForACK.hpp',
-#'src/BERConsumer.hpp',
+'src/BERConsumer.hpp',
 #'src/BERMeasurementReporting.hpp',
-#'src/BERProvider.hpp',
-#'src/Component.hpp',
+'src/BERProvider.hpp',
+'src/Component.hpp',
 #'src/convergence/Lower2Copper.hpp',
-#'src/convergence/Lower.hpp',
-#'src/convergence/Upper.hpp',
+'src/convergence/Lower.hpp',
+'src/convergence/Upper.hpp',
 #'src/wimemac.hpp',
 #'src/mac/Aloha.hpp',
 #'src/mac/Backoff.hpp',
@@ -154,10 +154,10 @@ hppFiles = [
 
 pyconfigs = [
 ##wimemac
-#'wimemac/frame.py',
-##'wimemac/BeaconBuilder.py',
-##
-#'wimemac/Routing.py',
+'wimemac/frame.py',
+#'wimemac/BeaconBuilder.py',
+#
+'wimemac/Routing.py',
 #'wimemac/BERMeasurementReporting.py',
 #'wimemac/MIH.py',
 #'wimemac/InSequenceChecker.py',
@@ -166,10 +166,10 @@ pyconfigs = [
 #'wimemac/ARQFSM.py',
 #'wimemac/Pilot.py',
 #'wimemac/Reconfiguration.py',
-#'wimemac/Glue.py',
+'wimemac/Wimemac.py',
 #'wimemac/__init__.py',
 #'wimemac/support/SubFUN.py',
-#'wimemac/support/ShortCutWithFrame.py',
+'wimemac/support/ShortCutWithFrame.py',
 #'wimemac/support/Aloha.py',
 #'wimemac/support/tests/ConfigurationTest.py',
 #'wimemac/support/tests/__init__.py',

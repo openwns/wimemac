@@ -10,14 +10,14 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#include <GLUE/BERProvider.hpp>
-#include <GLUE/BERConsumer.hpp>
+#include <WIMEMAC/BERProvider.hpp>
+#include <WIMEMAC/BERConsumer.hpp>
 
 #include <WNS/Assure.hpp>
 
 #include <iostream>
 
-using namespace glue;
+using namespace wimemac;
 
 BERProvider::BERProvider() :
 	berConsumers()

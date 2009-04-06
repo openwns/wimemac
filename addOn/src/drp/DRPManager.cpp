@@ -9,7 +9,7 @@
  * email: <hor@comnets.rwth-aachen.de>, www: http://wns.comnets.rwth-aachen.de/*
  ******************************************************************************/
 
-#include <WIMEMAC/DRPManager.hpp>
+#include <WIMEMAC/drp/DRPManager.hpp>
 
 using namespace wimemac::drp;
 using wimemac::frame::BeaconCommand;

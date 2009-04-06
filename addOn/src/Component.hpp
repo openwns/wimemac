@@ -10,8 +10,8 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#ifndef GLUE_COMPONENT_HPP
-#define GLUE_COMPONENT_HPP
+#ifndef WIMEMAC_COMPONENT_HPP
+#define WIMEMAC_COMPONENT_HPP
 
 #include <WNS/node/component/Component.hpp>
 
@@ -28,14 +28,14 @@
 
 #include <vector>
 
-namespace glue { namespace convergence {
+namespace wimemac { namespace convergence {
 	class UnicastUpper;
 	class BroadcastUpper;
 	class Lower;
 } // convergence
-} // glue
+} // wimemac
 
-namespace glue {
+namespace wimemac {
 
 	/**
 	 * @brief Offers a DLL service to higher layers
@@ -143,7 +143,7 @@ namespace glue {
 		wns::logger::Logger logger;
 	}; // Component
 
-} // glue
+} // wimemac
 
 
 #endif // NOT defined GLUE_COMPONENT_HPP

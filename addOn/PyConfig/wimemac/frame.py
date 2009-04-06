@@ -32,7 +32,7 @@ class ConfigFrame:#(Sealed):
 
 
 #class DataCollector(wns.FCF.CompoundCollector):
-#	__plugin__ = "glue.frame.DataCollector"
+#	__plugin__ = "wimemac.frame.DataCollector"
 #	
 #	logger = None
 #	duration = None
@@ -40,37 +40,37 @@ class ConfigFrame:#(Sealed):
 #	def __init__(self, name, duration, parentLogger = None):
 #		super(DataCollector, self).__init__(name)
 #		self.duration = duration
-#		self.logger = wns.Logger.Logger("Glue", "Data", True)
+#		self.logger = wns.Logger.Logger("wimemac", "Data", True)
 #        	self.logger.level = 2
 		
 
 
 
 class DRPScheduler:
-	__plugin__ = "glue.wimemac.drp.DRPScheduler"
+	__plugin__ = "wimemac.wimemac.drp.DRPScheduler"
 	
 	logger = None
                
 	
 	def __init__(self,name,parentLogger = None):
-            self.logger = wns.Logger.Logger("Glue", "DRPScheduler", True)
+            self.logger = wns.Logger.Logger("wimemac", "DRPScheduler", True)
             self.logger.level = 2
 
 
 class BeaconEvaluator:
-	__plugin__ = "glue.wimemac.frame.BeaconEvaluator"
+	__plugin__ = "wimemac.wimemac.frame.BeaconEvaluator"
 	
 	logger = None
                
 	
 	def __init__(self,name,parentLogger = None):
-            self.logger = wns.Logger.Logger("Glue", "BeaconEvaluator", True)
+            self.logger = wns.Logger.Logger("wimemac", "BeaconEvaluator", True)
             self.logger.level = 2
 
 
 
 class BeaconCollector(wns.FCF.CompoundCollector):
-	__plugin__ = "glue.wimemac.frame.BeaconCollector"
+	__plugin__ = "wimemac.wimemac.frame.BeaconCollector"
 	
 	logger = None
 	duration = None
@@ -79,26 +79,26 @@ class BeaconCollector(wns.FCF.CompoundCollector):
 		super(BeaconCollector, self).__init__(name)
 		self.duration = duration
                 self.BeaconSlot = beaconSlot
-		self.logger = wns.Logger.Logger("Glue", "Beacon", True)
+		self.logger = wns.Logger.Logger("wimemac", "Beacon", True)
         	self.logger.level = 2
 
 
 
 class BeaconBuilder:
-	__plugin__ = "glue.wimemac.frame.BeaconBuilder"
+	__plugin__ = "wimemac.wimemac.frame.BeaconBuilder"
 	
 	logger = None
         broadcastRouting = None
         
 	
 	def __init__(self,name,parentLogger = None):
-            self.logger = wns.Logger.Logger("Glue", "BeaconBuilder", True)
+            self.logger = wns.Logger.Logger("wimemac", "BeaconBuilder", True)
             self.logger.level = 2
             self.broadcastRouting = 'UpperCommand'
 
 
 class DataCollector(wns.FCF.CompoundCollector):
-	__plugin__ = "glue.wimemac.frame.DataCollector"
+	__plugin__ = "wimemac.wimemac.frame.DataCollector"
 	
 	logger = None
 	duration = None
@@ -106,12 +106,12 @@ class DataCollector(wns.FCF.CompoundCollector):
 	def __init__(self, name, duration, parentLogger = None):
 		super(DataCollector, self).__init__(name)
 		self.duration = duration
-                self.logger = wns.Logger.Logger("Glue", "Data", True)
+                self.logger = wns.Logger.Logger("wimemac", "Data", True)
         	self.logger.level = 2
 
 
 #class BeaconScheduler:#(Sealed):
-#	__plugin__ = "glue.frame.BeaconScheduler"
+#	__plugin__ = "wimemac.frame.BeaconScheduler"
 #	
 #	name = None
 #	logger = None
@@ -122,7 +122,7 @@ class DataCollector(wns.FCF.CompoundCollector):
 #
 #	def __init__(self, name, config, upperConvergenceCommandName):
 #		self.BeaconSlot = 1
-#		self.logger = wns.Logger.Logger("Glue", "BeaconScheduler", True)
+#		self.logger = wns.Logger.Logger("wimemac", "BeaconScheduler", True)
 #	       	self.logger.level = 2
 #		self.upperConvergenceCommandName = 'unicastUpperConvergence'
 #		self.myConfig = config

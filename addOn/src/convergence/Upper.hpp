@@ -10,8 +10,8 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#ifndef GLUE_CONVERGENCE_UPPER_HPP
-#define GLUE_CONVERGENCE_UPPER_HPP
+#ifndef WIMEMAC_CONVERGENCE_UPPER_HPP
+#define WIMEMAC_CONVERGENCE_UPPER_HPP
 
 #include <DLL/UpperConvergence.hpp>
 
@@ -26,7 +26,7 @@
 
 #include <WNS/pyconfig/View.hpp>
 
-namespace glue { namespace convergence {
+namespace wimemac { namespace convergence {
 
 	/**
 	 * @brief Contains MAC address of sending station

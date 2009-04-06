@@ -5,7 +5,7 @@ import wns.Logger
 class Routing(Sealed):
     """Routing FU"""
 
-    __plugin__ = 'glue.Routing'
+    __plugin__ = 'wimemac.Routing'
     name = "Routing"
 
     logger = None
@@ -18,6 +18,6 @@ class Routing(Sealed):
     """Allow change of routing information"""
 
     def __init__(self, addressProvider, **kw):
-        self.logger = wns.Logger.Logger("GLUE", "Routing", True)
+        self.logger = wns.Logger.Logger("wimemac", "Routing", True)
         self.addressProvider = addressProvider
         attrsetter(self, kw)

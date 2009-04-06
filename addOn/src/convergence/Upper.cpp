@@ -10,24 +10,24 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#include <GLUE/convergence/Upper.hpp>
-#include <GLUE/Component.hpp>
+#include <WIMEMAC/convergence/Upper.hpp>
+#include <WIMEMAC/Component.hpp>
 #include <WNS/ldk/Compound.hpp>
 #include <WNS/service/dll/Handler.hpp>
 #include <WNS/Assure.hpp>
 
-using namespace glue::convergence;
+using namespace wimemac::convergence;
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
 	UnicastUpper,
 	wns::ldk::FunctionalUnit,
-	"glue.convergence.UnicastUpper",
+	"wimemac.convergence.UnicastUpper",
 	wns::ldk::FUNConfigCreator);
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
 	BroadcastUpper,
 	wns::ldk::FunctionalUnit,
-	"glue.convergence.BroadcastUpper",
+	"wimemac.convergence.BroadcastUpper",
 	wns::ldk::FUNConfigCreator);
 
 wns::ldk::CommandPool*

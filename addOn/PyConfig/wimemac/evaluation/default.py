@@ -2,7 +2,7 @@ from openwns.evaluation import *
 
 def installEvaluation(sim, loggingStations):
 
-    sourceName = 'glue.ARQTransmissionAttempts'
+    sourceName = 'wimemac.ARQTransmissionAttempts'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -11,7 +11,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 15.0,
                             resolution = 14)) 
 
-    sourceName = 'glue.timeBufferEmpty'
+    sourceName = 'wimemac.timeBufferEmpty'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -20,7 +20,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 0.02,
                             resolution = 20000)) 
 
-    sourceName = 'glue.packetErrorRate'
+    sourceName = 'wimemac.packetErrorRate'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -29,7 +29,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 1.0,
                             resolution = 1000)) 
 
-    sourceName = 'glue.crcLoss'
+    sourceName = 'wimemac.crcLoss'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -38,7 +38,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 1.0,
                             resolution = 1000)) 
 
-    sourceName = 'glue.unicastBufferLoss'
+    sourceName = 'wimemac.unicastBufferLoss'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -47,7 +47,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 1.0,
                             resolution = 1000)) 
 
-    sourceName = 'glue.broadcastBufferLoss'
+    sourceName = 'wimemac.broadcastBufferLoss'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -56,7 +56,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 1.0,
                             resolution = 1000)) 
 
-    sourceName = 'glue.unicastBufferSize'
+    sourceName = 'wimemac.unicastBufferSize'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -65,7 +65,7 @@ def installEvaluation(sim, loggingStations):
                             maxXValue = 1.0,
                             resolution = 20)) 
 
-    sourceName = 'glue.broadcastBufferSize'
+    sourceName = 'wimemac.broadcastBufferSize'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -78,14 +78,14 @@ def installEvaluation(sim, loggingStations):
         for direction in [ 'incoming', 'outgoing', 'aggregated' ]:
             for what in [ 'bit', 'compound' ]:
 
-                sourceName = 'glue.%s.window.%s.%sThroughput' % (where, direction, what)
+                sourceName = 'wimemac.%s.window.%s.%sThroughput' % (where, direction, what)
                 node = openwns.evaluation.createSourceNode(sim, sourceName)
                 node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
                 node.getLeafs().appendChildren(TimeSeries())
 
     for where in [ 'unicastTop', 'broadcastTop' ]:
 
-        sourceName = 'glue.%s.packet.incoming.delay' % where
+        sourceName = 'wimemac.%s.packet.incoming.delay' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -94,7 +94,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 0.001,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.outgoing.delay' % where
+        sourceName = 'wimemac.%s.packet.outgoing.delay' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -103,7 +103,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 0.001,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.incoming.bitThroughput' % where
+        sourceName = 'wimemac.%s.packet.incoming.bitThroughput' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -112,7 +112,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 800000000.0,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.incoming.size' % where
+        sourceName = 'wimemac.%s.packet.incoming.size' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -121,7 +121,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 15000.0,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.outgoing.size' % where
+        sourceName = 'wimemac.%s.packet.outgoing.size' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -132,7 +132,7 @@ def installEvaluation(sim, loggingStations):
 
     for where in [ 'bottom' ]:
 
-        sourceName = 'glue.%s.packet.incoming.delay' % where
+        sourceName = 'wimemac.%s.packet.incoming.delay' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -141,7 +141,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 0.000001,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.outgoing.delay' % where
+        sourceName = 'wimemac.%s.packet.outgoing.delay' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -150,7 +150,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 0.000001,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.incoming.bitThroughput' % where
+        sourceName = 'wimemac.%s.packet.incoming.bitThroughput' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -159,7 +159,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 1000000000.0,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.incoming.size' % where
+        sourceName = 'wimemac.%s.packet.incoming.size' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -168,7 +168,7 @@ def installEvaluation(sim, loggingStations):
                                 maxXValue = 16000.0,
                                 resolution = 1000)) 
 
-        sourceName = 'glue.%s.packet.outgoing.size' % where
+        sourceName = 'wimemac.%s.packet.outgoing.size' % where
         node = openwns.evaluation.createSourceNode(sim, sourceName)
         node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
         node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -179,17 +179,17 @@ def installEvaluation(sim, loggingStations):
 
 def installMIHEvaluation(sim, loggingStations):
 
-    sourceName = 'glue.linkDetectedTriggerLevel'
+    sourceName = 'wimemac.linkDetectedTriggerLevel'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
     node.getLeafs().appendChildren(TimeSeries())
 
-    sourceName = 'glue.linkDownTriggerLevel'
+    sourceName = 'wimemac.linkDownTriggerLevel'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
     node.getLeafs().appendChildren(TimeSeries())
 
-    sourceName = 'glue.berLevel'
+    sourceName = 'wimemac.berLevel'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
     node.getLeafs().appendChildren(TimeSeries())

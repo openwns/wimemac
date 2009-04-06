@@ -24,7 +24,7 @@
 #include <map>
 #include <queue>
 #include <WIMEMAC/convergence/Upper.hpp>
-#include <WIMEMAC/wimemac/helper/IQueueInterface.hpp>
+#include <WIMEMAC/helper/IQueueInterface.hpp>
 
 
 

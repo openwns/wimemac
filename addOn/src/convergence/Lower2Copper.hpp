@@ -10,10 +10,10 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#ifndef GLUE_CONVERGENCE_LOWER2COPPER_HPP
-#define GLUE_CONVERGENCE_LOWER2COPPER_HPP
+#ifndef WIMEMAC_CONVERGENCE_LOWER2COPPER_HPP
+#define WIMEMAC_CONVERGENCE_LOWER2COPPER_HPP
 
-#include <GLUE/convergence/Lower.hpp>
+#include <WIMEMAC/convergence/Lower.hpp>
 
 #include <WNS/service/phy/copper/DataTransmission.hpp>
 #include <WNS/service/phy/copper/Notification.hpp>
@@ -27,7 +27,7 @@
 
 #include <map>
 
-namespace glue { namespace convergence {
+namespace wimemac { namespace convergence {
 
 	class Lower2Copper:
 		virtual public Lower,
@@ -87,7 +87,7 @@ namespace glue { namespace convergence {
 		bool isBlocking;
 	};
 } // convergence
-} // glue
+} // wimemac
 
 #endif // NOT defined GLUE_CONVERGENCE_LOWER2COPPER_HPP
 

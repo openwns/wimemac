@@ -12,31 +12,31 @@ import wns.Tools
 import wns.Multiplexer
 import wns.ARQ
 
-import glue.Reconfiguration
-import glue.MIH
-import glue.evaluation
+import wimemac.Reconfiguration
+import wimemac.MIH
+import wimemac.evaluation
 
 class Logger(wns.Logger.Logger):
-    """A special Logger for GLUE
+    """A special Logger for wimemac
 
-    The Logger's Module name is set to GLUE"""
+    The Logger's Module name is set to wimemac"""
 
     def __init__(self, name, enabled, parent = None, **kw):
-        super(Logger, self).__init__("GLUE", name, enabled, parent, **kw)
+        super(Logger, self).__init__("wimemac", name, enabled, parent, **kw)
 
 
-class Glue(wns.Module.Module):
-    """GLUE Module Configuration
+class wimemac(wns.Module.Module):
+    """wimemac Module Configuration
 
     Needed in order to load this Module by WNS."""
     def __init__(self):
         # The probes config might disappear with pyconfig probes ...
-        super(Glue, self).__init__("Glue", "glue")
+        super(wimemac, self).__init__("wimemac", "wimemac")
 
 class Component(wns.Node.Component):
     """Represents a generic data link layer in a wns.Node.Node"""
 
-    nameInComponentFactory = 'glue.Component'
+    nameInComponentFactory = 'wimemac.Component'
     """In C++ the node will ask the ComponentFactory with this name
     to build a Component (of this special type)"""
 
@@ -107,7 +107,7 @@ class Component(wns.Node.Component):
         BroadcastUpperConvergence(). _node is set as Loggers parent."""
 
         super(Component, self).__init__(node, name)
-        self.logger = Logger("Glue", self.loggerEnabled, node.logger)
+        self.logger = Logger("wimemac", self.loggerEnabled, node.logger)
         self.logger.level = 2
         self.address = Component.nextAddress
         Component.nextAddress += 1
@@ -156,14 +156,14 @@ class UpperConvergence(wns.PyConfig.Sealed):
         self.logger = Logger("UpperConvergence", enabled, parentLogger)
 
 class UnicastUpperConvergence(UpperConvergence):
-    __plugin__ = 'glue.convergence.UnicastUpper'
+    __plugin__ = 'wimemac.convergence.UnicastUpper'
     """Name in FunctionalUnitFactory"""
 
     def __init__(self, parentLogger = None, enabled = True):
         super(UnicastUpperConvergence, self).__init__(parentLogger, enabled)
 
 class BroadcastUpperConvergence(UpperConvergence):
-    __plugin__ = 'glue.convergence.BroadcastUpper'
+    __plugin__ = 'wimemac.convergence.BroadcastUpper'
     """Name in FunctionalUnitFactory"""
 
     def __init__(self, parentLogger = None, enabled = True):
@@ -172,7 +172,7 @@ class BroadcastUpperConvergence(UpperConvergence):
 class Lower2Copper(wns.PyConfig.Sealed):
     """(msg) should may be be renamed to User.Copper?"""
 
-    __plugin__ = 'glue.convergence.Lower2Copper'
+    __plugin__ = 'wimemac.convergence.Lower2Copper'
     """Name in FunctionalUnitFactory"""
 
     unicastRouting = None
@@ -202,7 +202,7 @@ class Lower2Copper(wns.PyConfig.Sealed):
 class MIHComponent(Component):
     """Represents a generic data link layer plus MIH functionality"""
 
-    nameInComponentFactory = 'glue.MIHComponent'
+    nameInComponentFactory = 'wimemac.MIHComponent'
     """In C++ the node will ask the ComponentFactory with this name
     to build a Component (of this special type)"""
 
@@ -231,19 +231,19 @@ class MIHComponent(Component):
 
     mihCapable = True
 
-    dllTechnologyName = "Glue"
+    dllTechnologyName = "wimemac"
 
     def __init__(self, node, name, phyDataTransmission, phyNotification, **kw):
         super(MIHComponent, self).__init__(node, name, phyDataTransmission, phyNotification)
-        self.logger = Logger("GlueWithMeasurementsMonitor", self.loggerEnabled, node.logger)
+        self.logger = Logger("wimemacWithMeasurementsMonitor", self.loggerEnabled, node.logger)
         self.linkEventNotification =  name + ".dllLinkEventNotification"
         self.linkCommandProcessorService =  name + ".dllLinkCommandProcessor"
         self.capabilityDiscoveryService = name + ".capabilityDiscoveryService"
         # Measurements Monitor needs a to have a BER Provider
-        # In this case this is the Lower Convergence of the Glue component
-        self.measurementsMonitor = wns.FUN.Node("measurementsMonitor",glue.MIH.MeasurementsMonitor("lowerConvergence", "glue.",self.address, self.logger))
-        self.linkCommandProcessor =wns.FUN.Node("linkCommandProcessor",glue.MIH.LinkCommandProcessor(self.logger))
-        self.capabilityDiscoveryProvider= wns.FUN.Node("capabilityDiscoveryProvider", glue.MIH.CapabilityDiscoveryProvider(self.address, self.dllTechnologyName, self.logger))
+        # In this case this is the Lower Convergence of the wimemac component
+        self.measurementsMonitor = wns.FUN.Node("measurementsMonitor",wimemac.MIH.MeasurementsMonitor("lowerConvergence", "wimemac.",self.address, self.logger))
+        self.linkCommandProcessor =wns.FUN.Node("linkCommandProcessor",wimemac.MIH.LinkCommandProcessor(self.logger))
+        self.capabilityDiscoveryProvider= wns.FUN.Node("capabilityDiscoveryProvider", wimemac.MIH.CapabilityDiscoveryProvider(self.address, self.dllTechnologyName, self.logger))
         self.fun.add(self.measurementsMonitor)
         self.fun.add(self.linkCommandProcessor)
         self.fun.add(self.capabilityDiscoveryProvider)
@@ -255,7 +255,7 @@ class CSMACAMAC(wns.FUN.FunctionalUnit):
     This FU is not tested (see CSMACATest why).
     """
     logger = None
-    __plugin__ = 'glue.CSMACA'
+    __plugin__ = 'wimemac.CSMACA'
 
     sifsLength = None
     slotLength = None
@@ -277,7 +277,7 @@ class CSMACAMAC(wns.FUN.FunctionalUnit):
 class StopAndWait(wns.ARQ.StopAndWait):
     """ Special version of StopAndWait for CSMACAMAC """
 
-    __plugin__ = 'glue.StopAndWait'
+    __plugin__ = 'wimemac.StopAndWait'
     """ Name in FU Factory """
 
     phyDataTransmissionFeedback = None
@@ -297,7 +297,7 @@ class StopAndWait(wns.ARQ.StopAndWait):
 class Aloha(wns.FUN.FunctionalUnit):
 
     logger = None
-    __plugin__ = 'glue.mac.Aloha'
+    __plugin__ = 'wimemac.mac.Aloha'
 
     maximumWaitingTime = None
     """ Maximum time (in seconds) to wait before medium access, the

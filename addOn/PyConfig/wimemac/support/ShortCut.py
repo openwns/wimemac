@@ -11,13 +11,13 @@ import wns.SAR
 import wns.Tools
 import wns.Multiplexer
 
-import glue.Reconfiguration
-import glue.Glue
-import glue.Trigger
-import glue.Routing
-import glue.BERMeasurementReporting
+import wimemac.Reconfiguration
+import wimemac.wimemac
+import wimemac.Trigger
+import wimemac.Routing
+import wimemac.BERMeasurementReporting
 
-class ShortCutComponent(glue.Glue.Component):
+class ShortCutComponent(wimemac.wimemac.Component):
     """Minimalistic configuration for testing
 
     This configuration contains (in addtion to lowerConvergence and
@@ -31,7 +31,7 @@ class ShortCutComponent(glue.Glue.Component):
         # These two have intentionally no probe configuration
         unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(size = bufferSize))
         broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(size = bufferSize))
-        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='glue.crcLoss', parentLogger=self.logger))
+        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='wimemac.crcLoss', parentLogger=self.logger))
         # add Buffer and CRC to fun
         self.fun.add(unicastBuffer)
         self.fun.add(broadcastBuffer)
@@ -48,17 +48,17 @@ class ShortCutComponent(glue.Glue.Component):
         self.dispatcher.connect(crc)
         crc.connect(self.lowerConvergence)
 
-class ShortCut(glue.Glue.Component):
+class ShortCut(wimemac.wimemac.Component):
     def __init__(self, _node, _name, _phyDataTransmission, _phyNotification, _bufferSize = 20, _sarFragmentSize = 160):
         super(ShortCut, self).__init__(_node, _name, _phyDataTransmission, _phyNotification)
         # create
-        unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(size = _bufferSize, lossRatioProbeName = 'glue.unicastBufferLoss', sizeProbeName = 'glue.unicastBufferSize'))
-        broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(size = _bufferSize, lossRatioProbeName = 'glue.broadcastBufferLoss', sizeProbeName = 'glue.broadcastBufferSize'))
-        topWindowProbe = wns.FUN.Node("topWindowProbe", wns.Probe.Window("glue.topWindowProbe", "glue.unicastTop", windowSize=.25))
-        topDelayProbe = wns.FUN.Node("delayProbe", wns.Probe.Packet("glue.topDelayProbe", "glue.unicastTop"))
-        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='glue.crcLoss'))
-        bottomWindowProbe = wns.FUN.Node("bottomWindowProbe", wns.Probe.Window("glue.bottomWindowProbe", "glue.bottom", windowSize=.25))
-        bottomDelayProbe = wns.FUN.Node("bottomDelayProbe", wns.Probe.Packet("glue.bottomDelayProbe", "glue.bottom"))
+        unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(size = _bufferSize, lossRatioProbeName = 'wimemac.unicastBufferLoss', sizeProbeName = 'wimemac.unicastBufferSize'))
+        broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(size = _bufferSize, lossRatioProbeName = 'wimemac.broadcastBufferLoss', sizeProbeName = 'wimemac.broadcastBufferSize'))
+        topWindowProbe = wns.FUN.Node("topWindowProbe", wns.Probe.Window("wimemac.topWindowProbe", "wimemac.unicastTop", windowSize=.25))
+        topDelayProbe = wns.FUN.Node("delayProbe", wns.Probe.Packet("wimemac.topDelayProbe", "wimemac.unicastTop"))
+        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='wimemac.crcLoss'))
+        bottomWindowProbe = wns.FUN.Node("bottomWindowProbe", wns.Probe.Window("wimemac.bottomWindowProbe", "wimemac.bottom", windowSize=.25))
+        bottomDelayProbe = wns.FUN.Node("bottomDelayProbe", wns.Probe.Packet("wimemac.bottomDelayProbe", "wimemac.bottom"))
         # add
         self.fun.add(unicastBuffer)
         self.fun.add(broadcastBuffer)
@@ -82,7 +82,7 @@ class ShortCut(glue.Glue.Component):
         bottomWindowProbe.connect(bottomDelayProbe)
         bottomDelayProbe.connect(self.lowerConvergence)
 
-class ShortCutComponentWithMeasurementsMonitor(glue.Glue.MIHComponent):
+class ShortCutComponentWithMeasurementsMonitor(wimemac.wimemac.MIHComponent):
     """Minimalistic configuration for testing with Measurements Monitor inside
 
     This configuration contains (in addtion to lowerConvergence and
@@ -113,7 +113,7 @@ class ShortCutComponentWithMeasurementsMonitor(glue.Glue.MIHComponent):
         self.dispatcher.connect(crc)
         crc.connect(self.lowerConvergence)
 
-class AcknowledgedModeShortCutComponent(glue.Glue.Component):
+class AcknowledgedModeShortCutComponent(wimemac.wimemac.Component):
     """Minimalistic configuration for testing
 
     This configuration contains (in addtion to lowerConvergence and
@@ -125,23 +125,23 @@ class AcknowledgedModeShortCutComponent(glue.Glue.Component):
         # probes
         perProbe = wns.Probe.ErrorRate(
             name = "errorRate",
-            prefix = "glue.packet",
+            prefix = "wimemac.packet",
             errorRateProvider = "lowerConvergence",
             commandName = "packetErrorRate")
 
         # create Buffer, ARQ and CRC
         unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(
             size = bufferSize,
-            lossRatioProbeName = 'glue.unicastBufferLoss',
-            sizeProbeName = 'glue.unicastBufferSize'))
+            lossRatioProbeName = 'wimemac.unicastBufferLoss',
+            sizeProbeName = 'wimemac.unicastBufferSize'))
 
         broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(
             size = bufferSize,
-            lossRatioProbeName = 'glue.broadcastBufferLoss',
-            sizeProbeName = 'glue.broadcastBufferSize'))
+            lossRatioProbeName = 'wimemac.broadcastBufferLoss',
+            sizeProbeName = 'wimemac.broadcastBufferSize'))
 
         arq = wns.FUN.Node("arq", wns.ARQ.StopAndWait(resendTimeout=resendTimeout))
-        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='glue.crcLoss'))
+        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='wimemac.crcLoss'))
 
         # add probes
         self.fun.add(perProbe)

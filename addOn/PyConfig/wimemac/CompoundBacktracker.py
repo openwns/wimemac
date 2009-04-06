@@ -5,7 +5,7 @@ import wns.Logger
 class CompoundBacktracker(Sealed):
     """Compound Backtracker FU"""
 
-    __plugin__ = 'glue.CompoundBacktracker'
+    __plugin__ = 'wimemac.CompoundBacktracker'
     name = "CompoundBacktracker"
 
     logger = None
@@ -18,5 +18,5 @@ class CompoundBacktracker(Sealed):
     """Show backtrace of outgoing compounds"""
 
     def __init__(self, parentLogger = None, **kw):
-        self.logger = wns.Logger.Logger("GLUE", "CompoundBacktracker", True, parentLogger)
+        self.logger = wns.Logger.Logger("wimemac", "CompoundBacktracker", True, parentLogger)
         attrsetter(self, kw)

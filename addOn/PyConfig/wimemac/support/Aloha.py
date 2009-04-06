@@ -11,13 +11,13 @@ import wns.SAR
 import wns.Tools
 import wns.Multiplexer
 
-import glue.Reconfiguration
-import glue.Glue
-import glue.Trigger
-import glue.Routing
-import glue.BERMeasurementReporting
+import wimemac.Reconfiguration
+import wimemac.wimemac
+import wimemac.Trigger
+import wimemac.Routing
+import wimemac.BERMeasurementReporting
 
-class AlohaComponent(glue.Glue.Component):
+class AlohaComponent(wimemac.wimemac.Component):
     """Component with Aloha MAC
 
     This configuration contains (in addtion to lowerConvergence and
@@ -39,11 +39,11 @@ class AlohaComponent(glue.Glue.Component):
 
         super(AlohaComponent, self).__init__(node, name, phyDataTransmission, phyNotification, blocking=False)
         # create Buffer, ARQ and CRC
-        unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(sizeUnit = 'Bit', size = bufferSize, lossRatioProbeName = 'glue.unicastBufferLoss', sizeProbeName = 'glue.unicastBufferSize'))
-        broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(sizeUnit = 'Bit', size = bufferSize, lossRatioProbeName = 'glue.broadcastBufferLoss', sizeProbeName = 'glue.broadcastBufferSize'))
+        unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(sizeUnit = 'Bit', size = bufferSize, lossRatioProbeName = 'wimemac.unicastBufferLoss', sizeProbeName = 'wimemac.unicastBufferSize'))
+        broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(sizeUnit = 'Bit', size = bufferSize, lossRatioProbeName = 'wimemac.broadcastBufferLoss', sizeProbeName = 'wimemac.broadcastBufferSize'))
         self.arq = wns.FUN.Node("arq", wns.ARQ.StopAndWait(parentLogger = self.logger, resendTimeout = arqResendTimeout))
-        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='glue.crcLoss'))
-        alohaMAC = glue.Glue.Aloha(commandName = "alohaMAC", maximumWaitingTime = alohaWaitingTime, parentLogger = self.logger)
+        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='wimemac.crcLoss'))
+        alohaMAC = wimemac.wimemac.Aloha(commandName = "alohaMAC", maximumWaitingTime = alohaWaitingTime, parentLogger = self.logger)
         # add Buffer, ARQ and CRC to fun
         self.fun.add(unicastBuffer)
         self.fun.add(broadcastBuffer)

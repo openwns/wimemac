@@ -5,7 +5,7 @@ import wns.Logger
 class Trigger(Sealed):
     """Trigger"""
 
-    __plugin__ = 'glue.Trigger'
+    __plugin__ = 'wimemac.Trigger'
     name = "Trigger"
 
     logger = None
@@ -21,7 +21,7 @@ class Trigger(Sealed):
     """Size of the packet header"""
 
     def __init__(self, BERProvider, SAR, **kw):
-        self.logger = wns.Logger.Logger("GLUE", "Trigger", True)
+        self.logger = wns.Logger.Logger("wimemac", "Trigger", True)
         self.BERProvider = BERProvider
         self.SAR = SAR
         attrsetter(self, kw)

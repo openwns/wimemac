@@ -15,5 +15,5 @@ class PilotTest(Pilot):
 
     def __init__(self):
         super(PilotTest, self).__init__(transmissionTimeout = 0.01,
-                                        logger = wns.Logger.Logger("GLUE", "Pilot", True),
+                                        logger = wns.Logger.Logger("wimemac", "Pilot", True),
                                         startEnabled = False)

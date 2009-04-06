@@ -6,7 +6,7 @@ from wns.Logger import Logger
 
 
 class SimpleManager(Sealed):
-    __plugin__= 'glue.reconfiguration.SimpleManager'
+    __plugin__= 'wimemac.reconfiguration.SimpleManager'
     name = "SimpleManager"
 
     master = False
@@ -30,12 +30,12 @@ class SimpleManager(Sealed):
 
     def __init__(self, reconfigurationSchemes, enabled = True, parentLogger = None, **kw):
         self.reconfigurationSchemes = reconfigurationSchemes
-        self.logger = Logger("GLUE", "Reconfiguration_SimpleManager", enabled, parentLogger)
+        self.logger = Logger("wimemac", "Reconfiguration_SimpleManager", enabled, parentLogger)
         attrsetter(self, kw)
 
 
 class TransmittingManager(Sealed):
-    __plugin__= 'glue.reconfiguration.TransmittingManager'
+    __plugin__= 'wimemac.reconfiguration.TransmittingManager'
     name = "TransmittingManager"
 
     master = False
@@ -75,12 +75,12 @@ class TransmittingManager(Sealed):
     def __init__(self, master, reconfigurationSchemes, enabled = True, parentLogger = None, **kw):
         self.master = master
         self.reconfigurationSchemes = reconfigurationSchemes
-        self.logger = Logger("GLUE", "Reconfiguration_TransmittingManager", enabled, parentLogger)
+        self.logger = Logger("wimemac", "Reconfiguration_TransmittingManager", enabled, parentLogger)
         attrsetter(self, kw)
 
 
 class SupportUpper(Sealed):
-    __plugin__= 'glue.reconfiguration.SupportUpper'
+    __plugin__= 'wimemac.reconfiguration.SupportUpper'
     name = "SupportUpper"
 
     logger = None
@@ -91,12 +91,12 @@ class SupportUpper(Sealed):
 
     def __init__(self, reconfigurationManager, enabled = True, parentLogger = None, **kw):
         self.reconfigurationManager = reconfigurationManager
-        self.logger = Logger("GLUE", "Reconfiguration_SupportUpper", enabled, parentLogger)
+        self.logger = Logger("wimemac", "Reconfiguration_SupportUpper", enabled, parentLogger)
         attrsetter(self, kw)
 
 
 class SupportLower(Sealed):
-    __plugin__= 'glue.reconfiguration.SupportLower'
+    __plugin__= 'wimemac.reconfiguration.SupportLower'
     name = "SupportLower"
 
     logger = None
@@ -122,17 +122,17 @@ class SupportLower(Sealed):
     def __init__(self, reconfigurationManager, drainFU, enabled = True, parentLogger = None, **kw):
         self.reconfigurationManager = reconfigurationManager
         self.drainFU = drainFU
-        self.logger = Logger("GLUE", "Reconfiguration_SupportLower", enabled, parentLogger)
-        self.ctiLogger = Logger("GLUE", "Reconfiguration_CTISetter", enabled, parentLogger)
+        self.logger = Logger("wimemac", "Reconfiguration_SupportLower", enabled, parentLogger)
+        self.ctiLogger = Logger("wimemac", "Reconfiguration_CTISetter", enabled, parentLogger)
         attrsetter(self, kw)
 
 
 class Drain(Sealed):
-    __plugin__= 'glue.reconfiguration.Drain'
+    __plugin__= 'wimemac.reconfiguration.Drain'
     name = "Drain"
 
     logger = None
     """Logger configuration"""
 
     def __init__(self, enabled = True, parentLogger = None):
-        self.logger = Logger("GLUE", "Reconfiguration_Drain", enabled, parentLogger)
+        self.logger = Logger("wimemac", "Reconfiguration_Drain", enabled, parentLogger)

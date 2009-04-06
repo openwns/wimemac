@@ -5,7 +5,7 @@ import wns.Logger
 class BERMeasurementReporting(Sealed):
     """BER Measurement Reporting FU"""
 
-    __plugin__ = 'glue.BERMeasurementReporting'
+    __plugin__ = 'wimemac.BERMeasurementReporting'
     name = "BERMeasurementReporting"
 
     logger = None
@@ -21,6 +21,6 @@ class BERMeasurementReporting(Sealed):
     """Size of the BER Measurement Reporting command"""
 
     def __init__(self, BERProvider, **kw):
-        self.logger = wns.Logger.Logger("GLUE", "BERMeasurementReporting", True)
+        self.logger = wns.Logger.Logger("wimemac", "BERMeasurementReporting", True)
         self.BERProvider = BERProvider
         attrsetter(self, kw)

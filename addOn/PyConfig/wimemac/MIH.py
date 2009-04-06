@@ -1,11 +1,11 @@
 import wns.PyConfig
-import glue.Glue
+import wimemac.wimemac
 import wns.FUN
 from wns.PyConfig import attrsetter
 
 class MeasurementsMonitor(wns.FUN.Node):
 
-    __plugin__ = 'glue.mih.MeasurementsMonitor'
+    __plugin__ = 'wimemac.mih.MeasurementsMonitor'
     """Name in FunctionalUnitFactory"""
 
     name='MeasurementsMonitor'
@@ -52,23 +52,23 @@ class MeasurementsMonitor(wns.FUN.Node):
         self.berLevelProbeName = prefix + "berLevel"
         self.linkDetectedProbeName = self.probeNamePrefix + "linkDetectedTriggerLevel"
         self.linkDownProbeName = self.probeNamePrefix + "linkDownTriggerLevel"
-	self.logger = glue.Glue.Logger('MeasurementsMonitor', True, parentLogger)
+	self.logger = wimemac.wimemac.Logger('MeasurementsMonitor', True, parentLogger)
 	attrsetter(self, kw)
 
 class LinkCommandProcessor(wns.FUN.Node):
 
-    __plugin__ = 'glue.mih.LinkCommandProcessor'
+    __plugin__ = 'wimemac.mih.LinkCommandProcessor'
     """Name in FunctionalUnitFactory"""
 
     logger = None
     """Logger configuration"""
 
     def __init__(self, parentLogger = None):
-        self.logger = glue.Glue.Logger('LinkCommandProcessor', True, parentLogger)
+        self.logger = wimemac.wimemac.Logger('LinkCommandProcessor', True, parentLogger)
 
 class CapabilityDiscoveryProvider(wns.FUN.Node):
 
-    __plugin__ = 'glue.mih.CapabilityDiscoveryProvider'
+    __plugin__ = 'wimemac.mih.CapabilityDiscoveryProvider'
     """Name in FunctionalUnitFactory"""
 
     address = None
@@ -87,4 +87,4 @@ class CapabilityDiscoveryProvider(wns.FUN.Node):
     def __init__(self, _address, _dllTechnologyName, parentLogger = None):
         self.address = _address
         self.dllTechnologyName = _dllTechnologyName
-        self.logger = glue.Glue.Logger('LinkCommandProcessor', True, parentLogger)
+        self.logger = wimemac.wimemac.Logger('LinkCommandProcessor', True, parentLogger)

@@ -11,20 +11,20 @@ import wns.SAR
 import wns.Tools
 import wns.Multiplexer
 
-import glue.Reconfiguration
-import glue.Glue
-import glue.Trigger
-import glue.Routing
-import glue.BERMeasurementReporting
-import glue.frame
+import wimemac.Reconfiguration
+import wimemac.wimemac
+import wimemac.Trigger
+import wimemac.Routing
+import wimemac.BERMeasurementReporting
+import wimemac.frame
 
-from glue.support.ShortCut import ShortCut, ShortCutComponent, ShortCutComponentWithMeasurementsMonitor, AcknowledgedModeShortCutComponent
-from glue.support.StopAndWait import StopAndWaitARQ, SARStopAndWaitARQ
-from glue.support.SelectiveRepeat import SelectiveRepeatARQ, SARSelectiveRepeatARQ, SARSelectiveRepeatARQTrigger, SARSelectiveRepeatARQTriggerReporting
-from glue.support.GoBackN import GoBackNARQ, SARGoBackNARQ
-from glue.support.Aloha import AlohaComponent
-from glue.support.CSMACA import CSMACAComponent
-from glue.support.ShortCutWithFrame import AcknowledgedModeShortCutFrame
+from wimemac.support.ShortCut import ShortCut, ShortCutComponent, ShortCutComponentWithMeasurementsMonitor, AcknowledgedModeShortCutComponent
+from wimemac.support.StopAndWait import StopAndWaitARQ, SARStopAndWaitARQ
+from wimemac.support.SelectiveRepeat import SelectiveRepeatARQ, SARSelectiveRepeatARQ, SARSelectiveRepeatARQTrigger, SARSelectiveRepeatARQTriggerReporting
+from wimemac.support.GoBackN import GoBackNARQ, SARGoBackNARQ
+from wimemac.support.Aloha import AlohaComponent
+from wimemac.support.CSMACA import CSMACAComponent
+from wimemac.support.ShortCutWithFrame import AcknowledgedModeShortCutFrame
 
 
 

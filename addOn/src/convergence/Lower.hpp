@@ -10,11 +10,11 @@
  * www: http://wns.comnets.rwth-aachen.de                                     *
  ******************************************************************************/
 
-#ifndef GLUE_CONVERGENCE_LOWER_HPP
-#define GLUE_CONVERGENCE_LOWER_HPP
+#ifndef WIMEMAC_CONVERGENCE_LOWER_HPP
+#define WIMEMAC_CONVERGENCE_LOWER_HPP
 
-#include <GLUE/Component.hpp>
-#include <GLUE/BERProvider.hpp>
+#include <WIMEMAC/Component.hpp>
+#include <WIMEMAC/BERProvider.hpp>
 
 #include <WNS/ldk/CommandTypeSpecifier.hpp>
 #include <WNS/ldk/HasReceptor.hpp>
@@ -22,7 +22,7 @@
 #include <WNS/ldk/HasDeliverer.hpp>
 #include <WNS/ldk/ErrorRateProviderInterface.hpp>
 
-namespace glue { namespace convergence {
+namespace wimemac { namespace convergence {
 
 	class LowerCommand :
 		public wns::ldk::Command,
@@ -44,7 +44,7 @@ namespace glue { namespace convergence {
 
 	class Lower :
 		virtual public wns::ldk::FunctionalUnit,
-		public glue::BERProvider
+		public wimemac::BERProvider
 	{
 	public:
 		virtual void
@@ -65,7 +65,7 @@ namespace glue { namespace convergence {
 
 
 } // convergence
-} // glue
+} // wimemac
 
 
 #endif // NOT defined GLUE_CONVERGENCE_LOWER_HPP

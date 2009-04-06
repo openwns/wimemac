@@ -9,7 +9,7 @@
  * email: hor@comnets.de, www: http://wns.comnets.rwth-aachen.de/             *
  *****************************************************************************/
 
-#include <GLUE/wimemac/drp/DRPScheduler.hpp>
+#include <WIMEMAC/drp/DRPScheduler.hpp>
 
 
 

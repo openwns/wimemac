@@ -12,19 +12,19 @@ import wns.Tools
 import wns.Multiplexer
 import wns.FCF
 
-import glue.Reconfiguration
-import glue.Glue
-import glue.Trigger
-import glue.Routing
-import glue.BERMeasurementReporting
-import glue.frame
+import wimemac.Reconfiguration
+import wimemac.wimemac
+import wimemac.Trigger
+import wimemac.Routing
+import wimemac.BERMeasurementReporting
+import wimemac.frame
 
 
 
 
 
 
-class AcknowledgedModeShortCutFrame(glue.Glue.Component):
+class AcknowledgedModeShortCutFrame(wimemac.wimemac.Component):
     """Minimalistic configuration for testing
 
     This configuration contains (in addtion to lowerConvergence and
@@ -45,32 +45,32 @@ class AcknowledgedModeShortCutFrame(glue.Glue.Component):
         # probes
         perProbe = wns.Probe.ErrorRate(
             name = "errorRate",
-            prefix = "glue.packet",
+            prefix = "wimemac.packet",
             errorRateProvider = "lowerConvergence",
             commandName = "packetErrorRate")
 
         # create Buffer, ARQ and CRC
         unicastBuffer = wns.FUN.Node("unicastBuffer", wns.Buffer.Dropping(
                 size = bufferSize,
-                lossRatioProbeName = 'glue.unicastBufferLoss',
-                sizeProbeName = 'glue.unicastBufferSize'))
+                lossRatioProbeName = 'wimemac.unicastBufferLoss',
+                sizeProbeName = 'wimemac.unicastBufferSize'))
         
         broadcastBuffer = wns.FUN.Node("broadcastBuffer", wns.Buffer.Dropping(
                 size = bufferSize,
-                lossRatioProbeName = 'glue.broadcastBufferLoss',
-                sizeProbeName = 'glue.broadcastBufferSize'))
+                lossRatioProbeName = 'wimemac.broadcastBufferLoss',
+                sizeProbeName = 'wimemac.broadcastBufferSize'))
         
         arq = wns.FUN.Node("arq", wns.ARQ.StopAndWait(resendTimeout=resendTimeout))
-        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='glue.crcLoss'))
+        crc = wns.FUN.Node("crc", wns.CRC.CRC("lowerConvergence", lossRatioProbeName='wimemac.crcLoss'))
         
         
 
         #BeaconBuilder
         self.BeaconBuilder =  wns.FUN.Node(
-            "BeaconBuilder",glue.frame.BeaconBuilder("BeaconBuilder",self.logger))
+            "BeaconBuilder",wimemac.frame.BeaconBuilder("BeaconBuilder",self.logger))
 
         #DRPScheduler
-        self.DRPScheduler = wns.FUN.Node("DRPScheduler", glue.frame.DRPScheduler("DRPScheduler",self.logger))
+        self.DRPScheduler = wns.FUN.Node("DRPScheduler", wimemac.frame.DRPScheduler("DRPScheduler",self.logger))
         
         #FrameBuilder
         self.FrameBuilder = wns.FUN.Node(
@@ -79,10 +79,10 @@ class AcknowledgedModeShortCutFrame(glue.Glue.Component):
              symbolDuration = 0.0))
 
         self.BeaconCollector = wns.FUN.Node(
-            "Beacon", glue.frame.BeaconCollector("Beacon", 6*256E-6,beaconSlot,self.logger))
+            "Beacon", wimemac.frame.BeaconCollector("Beacon", 6*256E-6,beaconSlot,self.logger))
         
         self.DataCollector = wns.FUN.Node(
-            "Data",glue.frame.DataCollector("Data", 249*256E-6, self.logger))
+            "Data",wimemac.frame.DataCollector("Data", 249*256E-6, self.logger))
 
 
         #add FrameBuilder

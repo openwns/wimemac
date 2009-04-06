@@ -2,12 +2,12 @@ from openwns.evaluation import *
 
 def installEvaluation(sim, loggingStations):
 
-    sourceName = 'glue.packetErrorRate'
+    sourceName = 'wimemac.packetErrorRate'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
     node.getLeafs().appendChildren(Moments())
 
-    sourceName = 'glue.crcLoss'
+    sourceName = 'wimemac.crcLoss'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -16,7 +16,7 @@ def installEvaluation(sim, loggingStations):
                                        maxXValue = 1.0,
                                        resolution = 1000)) 
 
-    sourceName = 'glue.unicastBufferLoss'
+    sourceName = 'wimemac.unicastBufferLoss'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -25,7 +25,7 @@ def installEvaluation(sim, loggingStations):
                                        maxXValue = 1.0,
                                        resolution = 1000)) 
 
-    sourceName = 'glue.broadcastBufferLoss'
+    sourceName = 'wimemac.broadcastBufferLoss'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -34,7 +34,7 @@ def installEvaluation(sim, loggingStations):
                                        maxXValue = 1.0,
                                        resolution = 1000)) 
 
-    sourceName = 'glue.unicastBufferSize'
+    sourceName = 'wimemac.unicastBufferSize'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,
@@ -43,7 +43,7 @@ def installEvaluation(sim, loggingStations):
                                        maxXValue = 1.0,
                                        resolution = 20)) 
     
-    sourceName = 'glue.broadcastBufferSize'
+    sourceName = 'wimemac.broadcastBufferSize'
     node = openwns.evaluation.createSourceNode(sim, sourceName)
     node.appendChildren(Accept(by = 'wns.node.Node.id', ifIn = loggingStations))
     node.getLeafs().appendChildren(PDF(name = sourceName,

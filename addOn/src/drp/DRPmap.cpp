@@ -10,7 +10,7 @@
  ******************************************************************************/
 
 
-#include <WIMEMAC/DRPmap.hpp>
+#include <WIMEMAC/drp/DRPmap.hpp>
 
 
 
