@@ -1,8 +1,0 @@
-/**
-  @defgroup group_modules_glue Glue
-  @ingroup group_modules
-  @brief A reconfigurable Data Link Layer
-  @author Marc Schinnenburg <marc@schinnenburg.com>
-
-  @copydoc glue
-*/
