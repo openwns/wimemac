@@ -1,1 +1,1 @@
-/net/beast3/HOR/source/openWNSclean/SConscript
+../../../SConscript
