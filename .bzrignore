@@ -5,3 +5,5 @@ include
 config/private.py
 config/pushMailRecipients.py
 addOn
+addOn
+addOn

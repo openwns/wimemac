@@ -2,7 +2,7 @@
 # This file is part of openWNS (open Wireless Network Simulator)
 # _____________________________________________________________________________
 #
-# Copyright (C) 2004-2007
+# Copyright (C) 2004-2008
 # Chair of Communication Networks (ComNets)
 # Kopernikusstr. 16, D-52074 Aachen, Germany
 # phone: ++49-241-80-27910,
@@ -25,12 +25,15 @@
 #
 ###############################################################################
 
-import openwns.module
-import openwns.simulator
+import openwns.FUN
 
-class WiMeMAC(openwns.module.Module):
-    def __init__(self):
-        super(WiMeMAC, self).__init__("wimemac", "wimemac")
+class ARQ(openwns.FUN.FunctionalUnit):
+    __plugin__ = "wimemac.arq.ARQ"
+    managerName = None
+    def __init__(self,name, managerName, parentLogger = None, commandName = None):
+        super(ARQ, self).__init__(functionalUnitName = name, commandName = commandName)
+        self.logger = openwns.logger.Logger("wimemac", "ARQ", True, parentLogger)
+        self.logger.level = 2
+        self.managerName = managerName
 
-# add the Module in order to get it loaded
-openwns.simulator.OpenWNS.modules.wimemac = WiMeMAC()
+
