@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #ifndef WIMEMAC_HELPER_QUEUES_H
 #define WIMEMAC_HELPER_QUEUES_H
 
@@ -72,9 +73,6 @@ class Queues:
         bool queueHasPDUs(wns::service::dll::UnicastAddress macaddress);
 
         virtual
-        void setFriend(wimemac::management::BeaconBuilder* bb);
-
-        virtual
         std::string printAllQueues();
 
         virtual
@@ -90,7 +88,6 @@ class Queues:
 
         struct Friends
         {
-            wimemac::management::BeaconBuilder* bb;
             wns::ldk::CommandReaderInterface* keyReader;
         } friends;
 

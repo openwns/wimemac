@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -36,15 +36,17 @@
 #include <WNS/ldk/Processor.hpp>
 
 #include <WNS/distribution/Uniform.hpp>
-#include <WIMEMAC/convergence/PhyUser.hpp>
 #include <WNS/logger/Logger.hpp>
 
 #include <WNS/probe/bus/ContextCollector.hpp>
 
 #include <WNS/container/RangeMap.hpp>
 
+#include <WIMEMAC/convergence/PhyUser.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
+
 namespace wimemac { namespace convergence {
-    class PhyUser;
+    class IPhyServices;
 }}
 
 namespace wimemac { namespace convergence {
@@ -157,8 +159,8 @@ namespace wimemac { namespace convergence {
 
         struct Friends
         {
-            wimemac::convergence::PhyUser* phyuser;
-            wimemac::lowerMAC::Manager* manager;
+            wimemac::convergence::IPhyServices* phyuser;
+            wimemac::lowerMAC::IManagerServices* manager;
         } friends;
 
     }; // ErrorModelling

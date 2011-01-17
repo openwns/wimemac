@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #ifndef WIMEMAC_DRP_DRPSCHEDULER_H
 #define WIMEMAC_DRP_DRPSCHEDULER_H
 
@@ -49,6 +50,7 @@
 #include <WIMEMAC/management/BeaconCommand.hpp>
 #include <WIMEMAC/lowerMAC/timing/DCF.hpp>
 #include <WIMEMAC/lowerMAC/TXOP.hpp>
+#include <WIMEMAC/drp/IDRPSchedulerServices.hpp>
 
 #include <DLL/Layer2.hpp>
 #include <WNS/ldk/CommandTypeSpecifier.hpp>
@@ -131,7 +133,8 @@ namespace wimemac { namespace drp {
         public wimemac::helper::IDRPQueueInterface,
         public wns::events::CanTimeout,
         public wns::ldk::probe::Probe,
-        public wimemac::lowerMAC::ITXOPWindow
+        public wimemac::lowerMAC::ITXOPWindow,
+        public wimemac::drp::IDRPSchedulerServices
 
         {
         friend class TempSendBuffer;
@@ -149,7 +152,7 @@ namespace wimemac { namespace drp {
             void SendCompounds(wns::service::dll::UnicastAddress macaddress);
             void Acknowledgment(wns::service::dll::UnicastAddress tx);
 
-            virtual void
+            void
             TimeToTransmit(wns::service::dll::UnicastAddress macaddress, wns::simulator::Time duration);
 
             /** @brief Get the PhyMode for a transmission partner*/
@@ -191,11 +194,11 @@ namespace wimemac { namespace drp {
             void RequestIE(wns::service::dll::UnicastAddress rx, wimemac::management::BeaconCommand::ProbeElementID elementID);
 
             /** @brief returns transmission duration of next compound (if any) */
-            virtual wns::simulator::Time
+            wns::simulator::Time
             getNextTransmissionDuration();
 
             /** @brief returns receiver address of next compound (if any) */
-            virtual wns::service::dll::UnicastAddress
+            wns::service::dll::UnicastAddress
             getNextReceiver() const;
 
             /** @brief invokes a PCA transmission */
@@ -225,7 +228,7 @@ namespace wimemac { namespace drp {
 
         protected:
 
-            virtual void onFUNCreated();
+            void onFUNCreated();
 
         private:
 

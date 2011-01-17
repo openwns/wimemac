@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -54,7 +54,7 @@ TxDurationSetter::~TxDurationSetter()
 void TxDurationSetter::onFUNCreated()
 {
     MESSAGE_SINGLE(NORMAL, this->logger, "onFUNCreated() started");
-    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
 }
 
 void
@@ -70,7 +70,7 @@ TxDurationSetter::processOutgoing(const wns::ldk::CompoundPtr& compound)
     wimemac::convergence::PhyMode phyMode = friends.manager->getPhyMode(compound->getCommandPool());
 
     // calculate tx duration
-    wns::simulator::Time preambleTxDuration = friends.manager->protocolCalculator->getDuration()->preamble(phyMode);
+    wns::simulator::Time preambleTxDuration = friends.manager->getProtocolCalculator()->getDuration()->preamble(phyMode);
 
     if(friends.manager->isPreamble(compound->getCommandPool()))
     {
@@ -82,12 +82,12 @@ TxDurationSetter::processOutgoing(const wns::ldk::CompoundPtr& compound)
     }
     else
     {
-        command->local.txDuration = friends.manager->protocolCalculator->getDuration()->PSDU_PPDU(compound->getLengthInBits(), phyMode) - preambleTxDuration;
+        command->local.txDuration = friends.manager->getProtocolCalculator()->getDuration()->PSDU_PPDU(compound->getLengthInBits(), phyMode) - preambleTxDuration;
         //MESSAGE_BEGIN(VERBOSE, this->logger, m, "Outgoing Compound with size ");
         MESSAGE_BEGIN(NORMAL, this->logger, m, "Outgoing Compound with size ");
         m << compound->getLengthInBits();
         m << " with nIBP6S " << phyMode.getInfoBitsPer6Symbols();
-        m << " --> duration " << friends.manager->protocolCalculator->getDuration()->PSDU_PPDU(compound->getLengthInBits(), phyMode);
+        m << " --> duration " << friends.manager->getProtocolCalculator()->getDuration()->PSDU_PPDU(compound->getLengthInBits(), phyMode);
         m << " - " << preambleTxDuration;
         MESSAGE_END();
 

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -163,7 +163,7 @@ DRPManager::FindNewPattern(Vector DRPGlobal)
     m << "DRPManager searches for a new reservation pattern ";MESSAGE_END();
 
     // Update DRPGlobal with DRP Availability from peer
-    if (friends.manager->getDRPScheduler()->UpdateMapWithPeerAvailabilityMap( peerAddress, DRPGlobal))
+    if (friends.manager->UpdateMapWithPeerAvailabilityMap( peerAddress, DRPGlobal))
     {
         MESSAGE_SINGLE(NORMAL, logger, "FindPattern: Updated DRPGlobalMap with availabilityMap from address " << peerAddress << " to support ongoing pattern creation");
         peerStationsIsFullyAvailable = false;
@@ -194,7 +194,7 @@ DRPManager::CreateAdditionalPattern(Vector DRPGlobal)
     
 
     // Update DRPGlobal with DRP Availability from peer
-    if (friends.manager->getDRPScheduler()->UpdateMapWithPeerAvailabilityMap( peerAddress, DRPGlobal))
+    if (friends.manager->UpdateMapWithPeerAvailabilityMap( peerAddress, DRPGlobal))
     {
         MESSAGE_SINGLE(NORMAL, logger, "AddPattern: Updated DRPGlobalMap with availabilityMap from address " << peerAddress << " to support ongoing pattern creation");
         peerStationsIsFullyAvailable = false;

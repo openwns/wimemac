@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #ifndef WIMEMAC_FRAME_BEACONCOLLECTOR_H
 #define WIMEMAC_FRAME_BEACONCOLLECTOR_H
 
@@ -32,8 +33,8 @@
 #include <WNS/ldk/FunctionalUnit.hpp>
 #include <WNS/events/CanTimeout.hpp>
 #include <WNS/logger/Logger.hpp>
-#include <WIMEMAC/management/BeaconBuilder.hpp>
-#include <WIMEMAC/lowerMAC/Manager.hpp>
+#include <WIMEMAC/management/IBeaconBuilderServices.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
 #include <boost/bind.hpp>
 #include <WNS/events/scheduler/Callable.hpp>
 
@@ -109,8 +110,8 @@ namespace frame {
 
             struct Friends
             {
-                wimemac::management::BeaconBuilder* beaconbuilder;
-                wimemac::lowerMAC::Manager* manager;
+                wimemac::management::IBeaconBuilderServices* beaconbuilder;
+                wimemac::lowerMAC::IManagerServices* manager;
             } friends;
     };
 

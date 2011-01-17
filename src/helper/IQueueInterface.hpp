@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,16 +25,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #ifndef WIMEMAC_HELPER_IQUEUEINTERFACE_H
 #define WIMEMAC_HELPER_IQUEUEINTERFACE_H
 
 #include <WNS/service/dll/Address.hpp>
 #include <WNS/simulator/Time.hpp>
-#include <WIMEMAC/management/BeaconBuilder.hpp>
-
-namespace wimemac { namespace management {
-         class BeaconBuilder;
-}}
 
 namespace wimemac {namespace helper {
 
@@ -60,9 +56,6 @@ class IQueueInterface
 
 	virtual 
 	bool queueHasPDUs(wns::service::dll::UnicastAddress macaddress) = 0;
-
-	virtual 
-	void setFriend(wimemac::management::BeaconBuilder* bb) = 0;
 
 	virtual 
 	std::string printAllQueues() = 0;

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -29,7 +29,7 @@
 #ifndef WIMEMAC_CONVERGENCE_TXDURATIONSETTER_HPP
 #define WIMEMAC_CONVERGENCE_TXDURATIONSETTER_HPP
 
-#include <WIMEMAC/lowerMAC/Manager.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
 
 #include <WNS/ldk/fu/Plain.hpp>
 #include <WNS/ldk/Processor.hpp>
@@ -89,7 +89,7 @@ namespace wimemac { namespace convergence {
 
         struct Friends
         {
-            wimemac::lowerMAC::Manager* manager;
+            wimemac::lowerMAC::IManagerServices* manager;
         } friends;
     };
 

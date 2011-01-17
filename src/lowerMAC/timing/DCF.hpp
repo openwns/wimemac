@@ -3,9 +3,9 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2007
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
- * Kopernikusstr. 16, D-52074 Aachen, Germany
+ * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
  * fax: ++49-241-80-22242
  * email: info@openwns.org
@@ -32,7 +32,7 @@
 #include <WIMEMAC/lowerMAC/timing/Backoff.hpp>
 #include <WIMEMAC/convergence/IChannelState.hpp>
 #include <WIMEMAC/convergence/IRxStartEnd.hpp>
-#include <WIMEMAC/drp/DRPScheduler.hpp>
+#include <WIMEMAC/drp/IDRPSchedulerServices.hpp>
 
 #include <WNS/ldk/fu/Plain.hpp>
 #include <WNS/ldk/Command.hpp>
@@ -108,7 +108,7 @@ namespace wimemac { namespace lowerMAC { namespace timing {
 
         struct Friends
         {
-            wimemac::drp::DRPScheduler* drpScheduler;
+            wimemac::drp::IDRPSchedulerServices* drpScheduler;
         } friends;
 
         wns::logger::Logger logger;

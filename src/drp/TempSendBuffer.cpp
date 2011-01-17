@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -242,7 +242,7 @@ TempSendBuffer::getCurrentCompoundSize()
 bool
 TempSendBuffer::CalculateTxTime(int size, wns::simulator::Time &duration_)
 {
-    wns::simulator::Time TxDuration = drpscheduler->getManager()->protocolCalculator->getDuration()->MSDU_PPDU((Bit)size, drpscheduler->getPhyMode(tempBuffer.target, firstMASOfTxOP));
+    wns::simulator::Time TxDuration = drpscheduler->getManager()->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)size, drpscheduler->getPhyMode(tempBuffer.target, firstMASOfTxOP));
 
     MESSAGE_SINGLE(NORMAL, logger, "Intermediate Buffer compound time: " << TxDuration);
 
@@ -263,7 +263,7 @@ TempSendBuffer::CalculateTxTime(int size, wns::simulator::Time &duration_)
 wns::simulator::Time
 TempSendBuffer::CalculateTxTime(int size)
 {
-    wns::simulator::Time TxDuration = drpscheduler->getManager()->protocolCalculator->getDuration()->MSDU_PPDU((Bit)size, drpscheduler->getPhyMode(tempBuffer.target, firstMASOfTxOP)); // TODO manager->getMASNumber(now) for PCA transmissions that happen in MASs of different set PhyMode
+    wns::simulator::Time TxDuration = drpscheduler->getManager()->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)size, drpscheduler->getPhyMode(tempBuffer.target, firstMASOfTxOP)); // TODO manager->getMASNumber(now) for PCA transmissions that happen in MASs of different set PhyMode
     TxDuration += TxAckDuration + 2*SIFS;
     return TxDuration;
 }

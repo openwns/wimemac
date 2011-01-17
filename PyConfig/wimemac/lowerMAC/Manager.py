@@ -2,9 +2,9 @@
 # This file is part of openWNS (open Wireless Network Simulator)
 # _____________________________________________________________________________
 #
-# Copyright (C) 2004-2008
+# Copyright (C) 2004-2011
 # Chair of Communication Networks (ComNets)
-# Kopernikusstr. 16, D-52074 Aachen, Germany
+# Kopernikusstr. 5, D-52074 Aachen, Germany
 # phone: ++49-241-80-27910,
 # fax: ++49-241-80-22242
 # email: info@openwns.org
@@ -37,6 +37,12 @@ class ManagerConfig(object):
     msduLifetimeLimit = 0
     """ maximum msdu lifetime, set to zero for unlimited lifetime """
 
+    reservationBlocks = 1
+    useRandomPattern = False
+    useRateAdaptation = False
+    useDRPchannelAccess = True
+    usePCAchannelAccess = False
+
 class Manager(openwns.FUN.FunctionalUnit):
     __plugin__ = 'wimemac.lowerMAC.Manager'
 
@@ -51,11 +57,6 @@ class Manager(openwns.FUN.FunctionalUnit):
     protocolCalculatorName = None
     channelStateName = None
     upperConvergenceCommandName = None
-    reservationBlocks = None
-    useRandomPattern = None
-    useRateAdaptation = None
-    useDRPchannelAccess = None
-    usePCAchannelAccess = None
  
     myConfig = None
 
@@ -70,11 +71,6 @@ class Manager(openwns.FUN.FunctionalUnit):
              protocolCalculatorName,
              config,
              macaddress,
-             reservationBlocks,
-             useRandomPattern,
-             useRateAdaptation,
-             useDRPchannelAccess,
-             usePCAchannelAccess,
              parentLogger = None, **kw):
         super(Manager, self).__init__(functionalUnitName=functionalUnitName,
                               commandName=commandName)
@@ -85,11 +81,6 @@ class Manager(openwns.FUN.FunctionalUnit):
         self.drpSchedulerName = drpSchedulerName
         self.errorModellingName = errorModellingName
         self.protocolCalculatorName = protocolCalculatorName
-        self.reservationBlocks = reservationBlocks
-        self.useRandomPattern = useRandomPattern
-        self.useRateAdaptation = useRateAdaptation
-        self.useDRPchannelAccess = useDRPchannelAccess
-        self.usePCAchannelAccess = usePCAchannelAccess
 
         assert(config.__class__ == ManagerConfig)
         self.myConfig = config

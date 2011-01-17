@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -170,7 +170,6 @@ DRPScheduler::onFUNCreated()
     = getFUN()->findFriend<wimemac::lowerMAC::timing::DCF*>(dcfName);
     friends.txop
     = getFUN()->findFriend<wimemac::lowerMAC::TXOP*>(txopName);
-    DRPQueues->setFriend(friends.bb);
     friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
 
     // signal packet success/errors to MIB
@@ -405,9 +404,9 @@ DRPScheduler::getNextTransmissionDuration()
     Bit currentCompoundSize_ = PCABuffer[ActivePCArx]->getCurrentCompoundSize();
     Bit nextCompoundSize_ = PCABuffer[ActivePCArx]->getNextCompoundSize();
 
-    wns::simulator::Time currentduration = friends.manager->protocolCalculator->getDuration()->MSDU_PPDU(currentCompoundSize_,
+    wns::simulator::Time currentduration = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU(currentCompoundSize_,
         getPhyMode(ActivePCArx,friends.manager->getMASNumber(wns::simulator::getEventScheduler()->getTime())));
-    wns::simulator::Time nextduration = friends.manager->protocolCalculator->getDuration()->MSDU_PPDU(nextCompoundSize_,
+    wns::simulator::Time nextduration = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU(nextCompoundSize_,
         getPhyMode(ActivePCArx,friends.manager->getMASNumber(wns::simulator::getEventScheduler()->getTime())));
 
     // Check if the sending of the next compound does not interfere with a scheduled DRP reservation

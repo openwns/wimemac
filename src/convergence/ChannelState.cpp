@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -27,7 +27,6 @@
  ******************************************************************************/
 
 #include <WIMEMAC/convergence/ChannelState.hpp>
-// #include <WIMEMAC/lowerMAC/RTSCTS.hpp>
 
 #include <WNS/probe/bus/utils.hpp>
 
@@ -126,7 +125,7 @@ void ChannelState::onFUNCreated()
 {
     MESSAGE_SINGLE(NORMAL, this->logger, "onFUNCreated() started");
 
-    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
 
     // Observe txStartEnd
     if(activeIndicators.ownTx)

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -65,7 +65,7 @@ TrafficEstimation_mean::~TrafficEstimation_mean()
 void
 TrafficEstimation_mean::onFUNCreated()
 {
-    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
     scheduler = wns::simulator::getEventScheduler();
 
     wns::simulator::Time SFDuration = 65.536E-3;
@@ -203,7 +203,7 @@ TrafficEstimation_mean::periodically()
                             << "; Maximum compound size : "
                             << currentTraffic.MaxCompoundSize);
                         
-                            friends.manager->getDRPScheduler()->getBeaconBuilder()->prepareDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
+                            friends.manager->prepareDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
                         }
                         else
                         {
@@ -214,7 +214,7 @@ TrafficEstimation_mean::periodically()
                             << "; Maximum compound size : "
                             << currentTraffic.MaxCompoundSize);
                             
-                            friends.manager->getDRPScheduler()->getBeaconBuilder()->updateDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
+                            friends.manager->updateDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
                         }
                     }
                     else
@@ -226,7 +226,7 @@ TrafficEstimation_mean::periodically()
                         << "; Maximum compound size : "
                         << trafficEstimationConfig.MaxCompoundSize);
                     
-                        friends.manager->getDRPScheduler()->getBeaconBuilder()->prepareDRPConnection(rx, trafficEstimationConfig.CompoundspSF, trafficEstimationConfig.BitspSF, trafficEstimationConfig.MaxCompoundSize);
+                        friends.manager->prepareDRPConnection(rx, trafficEstimationConfig.CompoundspSF, trafficEstimationConfig.BitspSF, trafficEstimationConfig.MaxCompoundSize);
                     }
                     
                     // Save last set traffic characteristics

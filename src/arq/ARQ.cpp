@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #include <WIMEMAC/arq/ARQ.hpp>
 #include <DLL/Layer2.hpp>
 
@@ -63,7 +64,7 @@ ARQ::doOnData( const wns::ldk::CompoundPtr& compound )
     else
     {
         wns::service::dll::UnicastAddress rx = command->peer.sourceMACAddress;
-        wns::service::dll::UnicastAddress currentPartner = friends.manager->getDRPScheduler()->getCurrentTransmissionTarget();
+        wns::service::dll::UnicastAddress currentPartner = friends.manager->getCurrentTransmissionTarget();
 
         // only process compound if it's from the currently active transmission partner or if no transmission is active
         if((currentPartner == rx) || (currentPartner == wns::service::dll::UnicastAddress()))
@@ -76,7 +77,7 @@ ARQ::doOnData( const wns::ldk::CompoundPtr& compound )
                 {
                     MESSAGE_SINGLE(NORMAL, logger, "ARQ: an immediate ack is received from station : " << rx
                         <<"  inform the drp buffer about the acknowledged compound ");
-                    getFUN()->findFriend<wimemac::drp::DRPScheduler*>("DRPScheduler")->Acknowledgment(rx);
+                    friends.manager->Acknowledgment(rx);
 
                 }
             }
@@ -142,7 +143,7 @@ void
 ARQ::onFUNCreated()
 {
     ownaddress = getFUN()->findFriend<dll::UpperConvergence*>("upperConvergence")->getMACAddress();
-    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
 }
 
 void 

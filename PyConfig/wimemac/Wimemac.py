@@ -1,3 +1,30 @@
+###############################################################################
+# This file is part of openWNS (open Wireless Network Simulator)
+# _____________________________________________________________________________
+#
+# Copyright (C) 2004-2011
+# Chair of Communication Networks (ComNets)
+# Kopernikusstr. 5, D-52074 Aachen, Germany
+# phone: ++49-241-80-27910,
+# fax: ++49-241-80-22242
+# email: info@openwns.org
+# www: http://www.openwns.org
+# _____________________________________________________________________________
+#
+# openWNS is free software; you can redistribute it and/or modify it under the
+# terms of the GNU Lesser General Public License version 2 as published by the
+# Free Software Foundation;
+#
+# openWNS is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
+
 import openwns.module
 import openwns.pyconfig
 import openwns.node
@@ -20,7 +47,7 @@ import dll.Layer2
 import dll.UpperConvergence
 import dll.Services
 
-from openwns.pyconfig import Sealed
+#from openwns.pyconfig import Sealed
 
 class Logger(openwns.logger.Logger):
     """A special Logger for wimemac
@@ -77,20 +104,17 @@ class Component(dll.Layer2.Layer2):
         # constructor
         self.fun.add(self.upperConvergence)
 
-class Config(Sealed):
+class Config():
     funTemplate = None
     frequency = None
     bandwidth = 528
     txrxTurnaroundDelay = 1E-6
 
+    managerConfig = None
+
     numberOfStations = None
     channelModel = 2
     defPhyMode = 7
-    reservationBlocks = 1
-    useRandomPattern = False
-    useRateAdaptation = False
-    useDRPchannelAccess = True
-    usePCAchannelAccess = False
     maxPER = 0.03
     patternPEROffset = 0.0
     isDroppingAfterRetr = -1

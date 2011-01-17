@@ -1,16 +1,16 @@
 /******************************************************************************
- * WiMeMAC                                                                    *
+ * WiMeMac                                                                    *
  * This file is part of openWNS (open Wireless Network Simulator)
- * ____________________________________________________________________________
+ * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2007
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
- * Kopernikusstr. 16, D-52074 Aachen, Germany
+ * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
  * fax: ++49-241-80-22242
  * email: info@openwns.org
  * www: http://www.openwns.org
- * ____________________________________________________________________________
+ * _____________________________________________________________________________
  *
  * openWNS is free software; you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License version 2 as published by the
@@ -34,11 +34,8 @@
 #include <DLL/UpperConvergence.hpp>
 #include <WIMEMAC/convergence/PhyMode.hpp>
 #include <WNS/service/dll/Address.hpp>
-//#include <WIMEMAC/Layer2.hpp>
 
 #include <WNS/probe/bus/CommandContextProvider.hpp>
-
-//#include <WNS/isClass.hpp>
 
 namespace wimemac { namespace helper { namespace contextprovider {
 

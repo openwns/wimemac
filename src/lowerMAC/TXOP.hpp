@@ -3,9 +3,9 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2007
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
- * Kopernikusstr. 16, D-52074 Aachen, Germany
+ * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
  * fax: ++49-241-80-22242
  * email: info@openwns.org
@@ -30,7 +30,7 @@
 #define WIMEMAC_LOWERMAC_TXOP_HPP
 
 #include <WIMEMAC/convergence/PhyUser.hpp>
-#include <WIMEMAC/lowerMAC/Manager.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
 #include <WIMEMAC/lowerMAC/ITXOPWindow.hpp>
 #include <WIMEMAC/lowerMAC/ITXOPObserver.hpp>
 #include <WIMEMAC/management/ProtocolCalculator.hpp>
@@ -119,7 +119,7 @@ namespace wimemac { namespace lowerMAC {
         wimemac::management::ProtocolCalculator* protocolCalculator;
         struct Friends
         {
-            wimemac::lowerMAC::Manager* manager;
+            wimemac::lowerMAC::IManagerServices* manager;
             wimemac::lowerMAC::ITXOPWindow* txopWindow;
             //wimemac::lowerMAC::RateAdaptation* ra;
         } friends;

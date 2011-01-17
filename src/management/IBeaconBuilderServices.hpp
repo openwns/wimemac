@@ -25,40 +25,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
- 
-#include <WIMEMAC/WIMEMAC.hpp>
 
-using namespace wimemac;
+#ifndef WIMEMAC_MANAGEMENT_IBEACONBUILDERSERVICES_HPP
+#define WIMEMAC_MANAGEMENT_IBEACONBUILDERSERVICES_HPP
 
-STATIC_FACTORY_REGISTER_WITH_CREATOR(
-	WiMeMAC,
-	wns::module::Base,
-	"wimemac",
-	wns::PyConfigViewCreator);
+#include <WNS/service/dll/Address.hpp>
+#include <WNS/ldk/Command.hpp>
 
+#include <WIMEMAC/convergence/PhyMode.hpp>
 
-WiMeMAC::WiMeMAC(const wns::pyconfig::View& _pyco) :
-	wns::module::Module<WiMeMAC>(_pyco),
-	logger(_pyco.get<wns::pyconfig::View>("logger"))
-{
-}
+namespace wimemac { namespace management {
 
+    /** @brief Interface for the BeaconBuilder Services */
+    class IBeaconBuilderServices
+    {
+    public:
+        virtual ~IBeaconBuilderServices(){};
 
+        /** @brief Handling of the services */
+        virtual void prepareDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize) = 0;
 
-WiMeMAC::~WiMeMAC()
-{
-}
+        virtual void updateDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize) = 0;
+        
+        virtual void BuildDTPmap() = 0;
+        
+        virtual void SetBPDuration(wns::simulator::Time duration) = 0;
+        
+    };
+   
 
-void WiMeMAC::configure()
-{
-}
+} // management
+} // wimemac
 
-void WiMeMAC::startUp()
-{
-}
+#endif // not defined WIMEMAC_MANAGEMENT_IBEACONBUILDERSERVICES_HPP
 
-void WiMeMAC::shutDown()
-{
-}
 
 

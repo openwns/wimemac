@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -26,7 +26,6 @@
  *
  ******************************************************************************/
 
-// Test
 #ifndef WIMEMAC_TXTYPE_HPP
 #define WIMEMAC_TXTYPE_HPP
 

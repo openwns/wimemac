@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -35,6 +35,7 @@
 #include <WIMEMAC/drp/DRPScheduler.hpp>
 #include <WIMEMAC/convergence/ErrorModelling.hpp>
 #include <WIMEMAC/management/ProtocolCalculator.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
 
 #include <WNS/logger/Logger.hpp>
 
@@ -50,7 +51,13 @@
 
 #include <list>
 
-namespace wimemac { namespace convergence {
+namespace wimemac {
+namespace lowerMAC {
+
+    class IManagerServices;
+}
+
+namespace convergence {
     class PhyUser;
     class ErrorModelling;
 }}
@@ -61,6 +68,8 @@ namespace wimemac { namespace drp {
 
 namespace wimemac { namespace lowerMAC {
 
+    typedef std::vector<bool> Vector;
+  
     /** @brief Command of wimemac::lowerMAC::Manager */
     class ManagerCommand :
         public wimemac::IKnowsFrameTypeCommand
@@ -131,7 +140,8 @@ namespace wimemac { namespace lowerMAC {
 
     class Manager :
         public wns::ldk::fu::Plain<Manager, ManagerCommand>,
-        public wns::ldk::Processor<Manager>
+        public wns::ldk::Processor<Manager>,
+        public wimemac::lowerMAC::IManagerServices
 
 
     {
@@ -154,10 +164,6 @@ namespace wimemac { namespace lowerMAC {
         /** @brief Returns the phyUser*/
         wimemac::convergence::PhyUser*
         getPhyUser();
-
-        /** @brief Returns the DRPScheduler*/
-        wimemac::drp::DRPScheduler*
-        getDRPScheduler();
 
         /** @brief Access the stationType */
         dll::Layer2::StationType
@@ -328,9 +334,42 @@ namespace wimemac { namespace lowerMAC {
         int
         getMASNumber(wns::simulator::Time time_);
 
-        wimemac::management::ProtocolCalculator* protocolCalculator;
+        wimemac::management::ProtocolCalculator* getProtocolCalculator();
 
-        private:
+        // For BeaconBuilder Services
+        void prepareDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize);
+
+        void updateDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize);
+        
+        void BuildDTPmap();
+        
+        void SetBPDuration(wns::simulator::Time duration);
+        
+        // For DRPScheduler Services
+        bool startPCAtransmission();
+        void stopPCAtransmission();
+        void txOPCloseIn(wns::simulator::Time duration);
+        
+        wns::service::dll::UnicastAddress getCurrentTransmissionTarget();
+        
+         /** @brief get the number of retransmissions for the specified compound */
+        int getNumOfRetransmissions(const wns::ldk::CompoundPtr& compound);
+        
+         /** @brief Updates a DRPMap with the non available slots for a specified address */
+        bool UpdateMapWithPeerAvailabilityMap(wns::service::dll::UnicastAddress rx , Vector& DRPMap);
+        
+        /** @brief Returns true if the PER is above the limit and the PhyMode should be set down */
+        bool adjustMCSdown(wns::service::dll::UnicastAddress rx);
+        
+        /** @brief Updates the map of DRP reservations */
+        void UpdateDRPMap(Vector DRPMap);
+        
+        void onBPStart(wns::simulator::Time BPduration);
+        
+        void Acknowledgment(wns::service::dll::UnicastAddress tx);
+        
+        
+    private:
         virtual void
         onFUNCreated();
 
@@ -368,7 +407,7 @@ namespace wimemac { namespace lowerMAC {
         const std::string protocolCalculatorName;
         wns::probe::bus::ContextCollectorPtr mcsProbe;
 
-
+        wimemac::management::ProtocolCalculator* protocolCalculator;
 
         struct Friends
         {

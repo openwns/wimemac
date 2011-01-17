@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -60,8 +60,8 @@ PreambleGenerator::onFUNCreated()
 {
     MESSAGE_SINGLE(NORMAL, this->logger, "onFUNCreated() started");
 
-    friends.phyUser = getFUN()->findFriend<wimemac::convergence::PhyUser*>(phyUserName);
-    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    friends.phyUser = getFUN()->findFriend<wimemac::convergence::IPhyServices*>(phyUserName);
+    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
 }
 
 void
@@ -109,7 +109,7 @@ PreambleGenerator::processOutgoing(const wns::ldk::CompoundPtr& compound)
     wimemac::convergence::PhyMode phyMode =
         friends.manager->getPhyMode(compound->getCommandPool());
     wns::simulator::Time psduDuration =
-        friends.manager->protocolCalculator->getDuration()->MSDU_PSDU(compound->getLengthInBits(), phyMode); // FCS and pad bits were not added yet
+        friends.manager->getProtocolCalculator()->getDuration()->MSDU_PSDU(compound->getLengthInBits(), phyMode); // FCS and pad bits were not added yet
 
     // First we generate a preamble
     this->pendingPreamble = compound->copy();
@@ -158,7 +158,7 @@ PreambleGenerator::processOutgoing(const wns::ldk::CompoundPtr& compound)
     PreambleGeneratorCommand* preambleCommand = activateCommand(this->pendingPreamble->getCommandPool());
     preambleCommand->peer.frameId = compound->getBirthmark();
 
-    MESSAGE_SINGLE(NORMAL, logger, "Outgoing preamble with frame tx duration " << friends.manager->protocolCalculator->getDuration()->preamble(phyMode));
+    MESSAGE_SINGLE(NORMAL, logger, "Outgoing preamble with frame tx duration " << friends.manager->getProtocolCalculator()->getDuration()->preamble(phyMode));
 
     PreambleGeneratorCommand* compoundCommand = activateCommand(compound->getCommandPool());
 
@@ -227,7 +227,7 @@ PreambleGenerator::calculateSizes(const wns::ldk::CommandPool* commandPool, Bit&
     {
         getFUN()->getProxy()->calculateSizes(commandPool, commandPoolSize, dataSize, this);
 
-        Bit psdusize_ = friends.manager->protocolCalculator->getFrameLength()->getPSDU(commandPoolSize + dataSize, friends.manager->getPhyMode(commandPool).getInfoBitsPer6Symbols());
+        Bit psdusize_ = friends.manager->getProtocolCalculator()->getFrameLength()->getPSDU(commandPoolSize + dataSize, friends.manager->getPhyMode(commandPool).getInfoBitsPer6Symbols());
 
         commandPoolSize = 0;
         dataSize = psdusize_;

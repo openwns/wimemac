@@ -3,9 +3,9 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2007
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
- * Kopernikusstr. 16, D-52074 Aachen, Germany
+ * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
  * fax: ++49-241-80-22242
  * email: info@openwns.org
@@ -32,6 +32,7 @@
 #include <WNS/probe/bus/utils.hpp>
 
 #include <algorithm>
+#include "IManagerServices.hpp"
 
 using namespace wimemac::lowerMAC;
 
@@ -90,7 +91,7 @@ void TXOP::onFUNCreated()
 {
     MESSAGE_SINGLE(NORMAL, this->logger, "onFUNCreated() started");
 
-    friends.manager = getFUN()->findFriend<Manager*>(managerName);
+    friends.manager = getFUN()->findFriend<IManagerServices*>(managerName);
     friends.txopWindow = getFUN()->findFriend<ITXOPWindow*>(txopWindowName);
     //friends.ra = getFUN()->findFriend<RateAdaptation*>(raName);
     protocolCalculator = getFUN()->getLayer<dll::ILayer2*>()->getManagementService<wimemac::management::ProtocolCalculator>(protocolCalculatorName);
@@ -280,7 +281,7 @@ void TXOP::closeTXOP(bool forwardCall)
         observers[i]->onTXOPClosed();
     }
 
-    if(forwardCall) friends.manager->getDRPScheduler()->txOPCloseIn(lastFTDuration);
+    if(forwardCall) friends.manager->txOPCloseIn(lastFTDuration);
 }
 
 

@@ -2,9 +2,9 @@
 # This file is part of openWNS (open Wireless Network Simulator)
 # _____________________________________________________________________________
 #
-# Copyright (C) 2004-2008
+# Copyright (C) 2004-2011
 # Chair of Communication Networks (ComNets)
-# Kopernikusstr. 16, D-52074 Aachen, Germany
+# Kopernikusstr. 5, D-52074 Aachen, Germany
 # phone: ++49-241-80-27910,
 # fax: ++49-241-80-22242
 # email: info@openwns.org
@@ -105,13 +105,8 @@ def __getTopBlock__(transceiverAddress, names, config, myFUN, logger, probeLocal
                                  drpSchedulerName = names['drpScheduler'],
                                  errorModellingName = names['errorModelling'] + str(transceiverAddress),
                                  protocolCalculatorName = names['protocolCalculator'] + str(transceiverAddress),
-                                 config = wimemac.lowerMAC.ManagerConfig(),
+                                 config = config.managerConfig,
                                  macaddress = transceiverAddress,
-                                 reservationBlocks = config.reservationBlocks,
-                                 useRandomPattern = config.useRandomPattern,
-                                 useRateAdaptation = config.useRateAdaptation,
-                                 useDRPchannelAccess = config.useDRPchannelAccess,
-                                 usePCAchannelAccess = config.usePCAchannelAccess,
                                  parentLogger = logger)
     FUs.append(ManagerFU)
     

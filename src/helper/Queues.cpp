@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,7 +25,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #include <WIMEMAC/helper/Queues.hpp>
+#include <DLL/UpperConvergence.hpp>
 
 using namespace wimemac::helper;
 
@@ -40,13 +42,6 @@ Queues::Queues(const wns::pyconfig::View& _config, wns::ldk::fun::FUN* fun):
     scheduler = wns::simulator::getEventScheduler();
     deleteQueues = _config.get<bool>("deleteQueues");
     nextPCAReceiver = wns::service::dll::UnicastAddress();
-}
-
-void
-Queues::setFriend(wimemac::management::BeaconBuilder* bb)
-{
-    MESSAGE_SINGLE(NORMAL, logger, "Queue::setFUN()");
-    friends.bb = bb;
 }
 
 bool

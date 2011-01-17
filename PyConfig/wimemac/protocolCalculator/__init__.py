@@ -2,9 +2,9 @@
 # This file is part of openWNS (open Wireless Network Simulator)
 # _____________________________________________________________________________
 #
-# Copyright (C) 2004-2008
+# Copyright (C) 2004-2011
 # Chair of Communication Networks (ComNets)
-# Kopernikusstr. 16, D-52074 Aachen, Germany
+# Kopernikusstr. 5, D-52074 Aachen, Germany
 # phone: ++49-241-80-27910,
 # fax: ++49-241-80-22242
 # email: info@openwns.org
@@ -24,6 +24,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+
 
 from Duration import Duration
 from FrameLength import FrameLength

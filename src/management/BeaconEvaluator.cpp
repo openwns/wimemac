@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -463,7 +463,7 @@ BeaconEvaluator::evaluatePERforConnections()
     for(it = DRPOutgoingConnections.begin(); it != DRPOutgoingConnections.end() ;++it)
     {
         // Evaluate the PER of the connections the device owns
-        if( friends.manager->getDRPScheduler()->adjustMCSdown((*it).second->GetAddress()))
+        if( friends.manager->adjustMCSdown((*it).second->GetAddress()))
         {
             MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: A lower PhyMode will be used for address : " << (*it).second->GetAddress());
 

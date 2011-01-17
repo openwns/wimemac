@@ -26,24 +26,39 @@
  *
  ******************************************************************************/
 
-#ifndef WIMEMAC_LOWERMAC_ITXOPWINDOW_HPP
-#define WIMEMAC_LOWERMAC_ITXOPWINDOW_HPP
+#ifndef WIMEMAC_CONVERGENCE_IPHYSERVICES_HPP
+#define WIMEMAC_CONVERGENCE_IPHYSERVICES_HPP
 
-#include <WNS/simulator/Time.hpp>
-#include <WNS/ldk/Compound.hpp>
-#include <WNS/service/dll/Address.hpp>
+#include <WNS/service/phy/ofdma/Handler.hpp>
+#include <WNS/service/phy/ofdma/Notification.hpp>
+#include <WNS/service/phy/ofdma/DataTransmission.hpp>
 
-namespace wimemac { namespace lowerMAC {
-	/** Interface class for FUs which implement "peeking" ability for TXOP **/
-	class ITXOPWindow
-	{
-	public:
-		virtual wns::simulator::Time
-		getNextTransmissionDuration() = 0;
+#include <WIMEMAC/convergence/PhyModeProvider.hpp>
 
-		virtual wns::service::dll::UnicastAddress
-		getNextReceiver() const = 0;	
-	};
-} // lowerMAC
+namespace wimemac { namespace convergence {
+
+    /** @brief Interface for the PhyUser Services */
+    class IPhyServices
+    {
+    public:
+        virtual ~IPhyServices(){};
+
+        /** @brief Handling of the services */
+        virtual void setNotificationService(wns::service::Service* phy) = 0;
+        virtual wns::service::phy::ofdma::Notification* getNotificationService() const = 0;
+        virtual void setDataTransmissionService(wns::service::Service* phy) = 0;
+        virtual wns::service::phy::ofdma::DataTransmission* getDataTransmissionService() const = 0;
+        
+        /** @brief Handling of PhyModes */
+        virtual PhyModeProvider* getPhyModeProvider() = 0;
+        
+        /** @brief Get signal & noise power from compounds */
+        virtual wns::Power getRxPower(const wns::ldk::CommandPool* commandPool) = 0;
+        virtual wns::Power getInterference(const wns::ldk::CommandPool* commandPool) = 0;
+    };
+   
+
+} // convergence
 } // wimemac
-#endif // WIMEMAC_LOWERMAC_ITXOPWINDOW_HPP
+
+#endif // not defined WIMEMAC_CONVERGENCE_IPHYSERVICES_HPP

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #ifndef WIMEMAC_ARQ_ARQ_H
 #define WIMEMAC_ARQ_ARQ_H
 #include <WNS/ldk/fu/Plain.hpp>
@@ -33,7 +34,7 @@
 #include <WIMEMAC/arq/ARQCommand.hpp>
 #include <WNS/StaticFactory.hpp>
 #include <WNS/ldk/CommandTypeSpecifier.hpp>
-#include <WIMEMAC/lowerMAC/Manager.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
 #include <DLL/UpperConvergence.hpp>
 
 #include <WIMEMAC/drp/DRPScheduler.hpp>
@@ -74,7 +75,6 @@ namespace wimemac { namespace arq {
 
         private:
 
-            // wns::ldk::CompoundPtr CreateBeacon(); TODO can be deleted!?
             wns::ldk::CompoundPtr currentBeacon;
             wns::logger::Logger logger;
 
@@ -95,7 +95,7 @@ namespace wimemac { namespace arq {
         {
             dll::UpperConvergence* Upper;
             wns::ldk::CommandReaderInterface* keyReader;
-            wimemac::lowerMAC::Manager* manager;
+            wimemac::lowerMAC::IManagerServices* manager;
         } friends;
 
         void calculateSizes(const wns::ldk::CommandPool* commandPool, Bit& commandPoolSize, Bit& dataSize) const;

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -52,11 +52,11 @@ Manager::Manager(wns::ldk::fun::FUN* fun, const wns::pyconfig::View& config) :
     ucName_(config_.get<std::string>("upperConvergenceCommandName")),
     protocolCalculatorName(config_.get<std::string>("protocolCalculatorName")),
     mcsProbe(new wns::probe::bus::ContextCollector(wns::probe::bus::ContextProviderCollection(&fun->getLayer()->getContextProviderCollection()),"wimemac.manager.mcs")),
-    reservationBlocks(config.get<int>("reservationBlocks")),
-    useRandomPattern(config_.get<bool>("useRandomPattern") ),
-    useRateAdaptation(config_.get<bool>("useRateAdaptation")),
-    useDRPchannelAccess(config_.get<bool>("useDRPchannelAccess")),
-    usePCAchannelAccess(config_.get<bool>("usePCAchannelAccess")),
+    reservationBlocks(config.get<int>("myConfig.reservationBlocks")),
+    useRandomPattern(config_.get<bool>("myConfig.useRandomPattern") ),
+    useRateAdaptation(config_.get<bool>("myConfig.useRateAdaptation")),
+    useDRPchannelAccess(config_.get<bool>("myConfig.useDRPchannelAccess")),
+    usePCAchannelAccess(config_.get<bool>("myConfig.usePCAchannelAccess")),
     msduLifetimeLimit(config_.get<wns::simulator::Time>("myConfig.msduLifetimeLimit"))
     
 
@@ -208,10 +208,10 @@ Manager::getPhyUser()
     }
 }
 
-wimemac::drp::DRPScheduler*
-Manager::getDRPScheduler()
+wimemac::management::ProtocolCalculator*
+Manager::getProtocolCalculator()
 {
-    return (friends.drpScheduler);
+    return protocolCalculator;
 }
 
 dll::Layer2::StationType
@@ -497,3 +497,89 @@ Manager::setRequiresDirectReply(const wns::ldk::CommandPool* commandPool, bool r
     getCommand(commandPool)->peer.requiresDirectReply = requiresDirectReply;
 }
 
+// For BeaconBuilder Services
+/** @brief Forwardes the call to the BeaconBuilder */
+void
+Manager::prepareDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize)
+{
+    friends.drpScheduler->getBeaconBuilder()->prepareDRPConnection(rx, CompoundspSF, BitspSF, MaxCompoundSize);
+}
+
+void
+Manager::updateDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize)
+{
+    friends.drpScheduler->getBeaconBuilder()->updateDRPConnection(rx, CompoundspSF, BitspSF, MaxCompoundSize);
+}
+
+void
+Manager::BuildDTPmap()
+{
+    friends.drpScheduler->getBeaconBuilder()->BuildDTPmap();
+}
+        
+void
+Manager::SetBPDuration(wns::simulator::Time duration)
+{
+    friends.drpScheduler->getBeaconBuilder()->SetBPDuration(duration);
+}
+
+// For DRPScheduler Services
+bool 
+Manager::startPCAtransmission()
+{
+    friends.drpScheduler->startPCAtransmission();
+}
+ 
+void
+Manager::stopPCAtransmission()
+{
+    friends.drpScheduler->stopPCAtransmission();
+}
+
+void
+Manager::txOPCloseIn(wns::simulator::Time duration)
+{
+    friends.drpScheduler->txOPCloseIn(duration);
+}
+
+int
+Manager::getNumOfRetransmissions(const wns::ldk::CompoundPtr& compound)
+{
+    friends.drpScheduler->getNumOfRetransmissions(compound);
+}
+
+wns::service::dll::UnicastAddress
+Manager::getCurrentTransmissionTarget()
+{
+    friends.drpScheduler->getCurrentTransmissionTarget();
+}
+
+bool
+Manager::UpdateMapWithPeerAvailabilityMap(wns::service::dll::UnicastAddress rx , Vector& DRPMap)
+{
+    friends.drpScheduler->UpdateMapWithPeerAvailabilityMap(rx, DRPMap);
+}
+
+bool
+Manager::adjustMCSdown(wns::service::dll::UnicastAddress rx)
+{
+    friends.drpScheduler->adjustMCSdown(rx);
+}
+
+void
+Manager::UpdateDRPMap(Vector DRPMap)
+{
+    friends.drpScheduler->UpdateDRPMap(DRPMap);
+}
+
+void
+Manager::onBPStart(wns::simulator::Time BPduration)
+{
+    friends.drpScheduler->onBPStart(BPduration);
+}
+
+void 
+Manager::Acknowledgment(wns::service::dll::UnicastAddress tx)
+{
+    friends.drpScheduler->Acknowledgment(tx);
+}

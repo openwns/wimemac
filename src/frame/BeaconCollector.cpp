@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #include <WIMEMAC/frame/BeaconCollector.hpp>
 
 STATIC_FACTORY_REGISTER_WITH_CREATOR(
@@ -126,10 +127,10 @@ BeaconCollector::onFUNCreated()
 
 
     friends.beaconbuilder = 
-    getFUN()->findFriend<wimemac::management::BeaconBuilder*>("BeaconBuilder");
+    getFUN()->findFriend<wimemac::management::IBeaconBuilderServices*>("BeaconBuilder");
 
     friends.manager = 
-    getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
 
     friends.beaconbuilder->SetBPDuration(duration);
 }

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+ 
 #ifndef WIMEMAC_MANAGEMENT_BEACONBUILDER_H
 #define WIMEMAC_MANAGEMENT_BEACONBUILDER_H
 
@@ -33,6 +34,7 @@
 #include <WNS/service/dll/Address.hpp>
 #include <WIMEMAC/lowerMAC/Manager.hpp>
 #include <WIMEMAC/management/BeaconCommand.hpp>
+#include <WIMEMAC/management/IBeaconBuilderServices.hpp>
 #include <WIMEMAC/management/BeaconEvaluator.hpp>
 #include <WNS/ldk/CommandTypeSpecifier.hpp>
 #include <WIMEMAC/helper/IDRPQueueInterface.hpp>
@@ -54,7 +56,8 @@ typedef std::vector<bool> Vector;
     class BeaconBuilder :
 
         public wns::ldk::fu::Plain<BeaconBuilder, BeaconCommand>,
-        public BeaconEvaluator
+        public BeaconEvaluator,
+        public IBeaconBuilderServices
         {
         public:
 
@@ -73,6 +76,8 @@ typedef std::vector<bool> Vector;
 
             void prepareDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize);
             void updateDRPConnection(wns::service::dll::UnicastAddress rx, int CompoundspSF, int BitspSF, int MaxCompoundSize);
+            
+            void SetBPDuration(wns::simulator::Time duration) {BeaconEvaluator::SetBPDuration(duration);};
 
 
         protected:

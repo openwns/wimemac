@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -36,6 +36,7 @@
 #include <WNS/logger/Logger.hpp>
 #include <WNS/simulator/Time.hpp>
 #include <WIMEMAC/management/BeaconBuilder.hpp>
+#include <WIMEMAC/lowerMAC/IManagerServices.hpp>
 #include <boost/bind.hpp>
 #include <WNS/events/scheduler/Callable.hpp>
 #include <WNS/events/PeriodicTimeout.hpp>
@@ -88,7 +89,7 @@ namespace wimemac { namespace upperMAC {
         struct Friends
         {
             wns::ldk::CommandReaderInterface* keyReader;
-            wimemac::lowerMAC::Manager* manager;
+            wimemac::lowerMAC::IManagerServices* manager;
         } friends;
 
         struct config

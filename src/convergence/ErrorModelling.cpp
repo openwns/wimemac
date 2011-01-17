@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -29,6 +29,7 @@
 #include <WIMEMAC/convergence/PhyMode.hpp>
 #include <WIMEMAC/convergence/ErrorModelling.hpp>
 #include <WIMEMAC/lowerMAC/Manager.hpp>
+#include "IPhyServices.hpp"
 
 using namespace wimemac::convergence;
 
@@ -221,8 +222,8 @@ ErrorModelling::ErrorModelling(wns::ldk::fun::FUN* fun, const wns::pyconfig::Vie
 
 void ErrorModelling::onFUNCreated()
 {
-    friends.phyuser = getFUN()->findFriend<wimemac::convergence::PhyUser*>(phyUserName);
-    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::Manager*>(managerName);
+    friends.phyuser = getFUN()->findFriend<wimemac::convergence::IPhyServices*>(phyUserName);
+    friends.manager = getFUN()->findFriend<wimemac::lowerMAC::IManagerServices*>(managerName);
 
     // Fill the registry with the snr2pmean maps together with their corresponding phymodes as key
     // get lowest phymode and start filling the registry
@@ -270,10 +271,9 @@ void ErrorModelling::processIncoming(const wns::ldk::CompoundPtr& compound)
 {
 
     // Calculate PER
-    wns::Power rxPower_ = getFUN()->getCommandReader(phyUserCommandName)->
-        readCommand<wimemac::convergence::PhyUserCommand>(compound->getCommandPool())->local.rxPower;
-    wns::Power interference_ = getFUN()->getCommandReader(phyUserCommandName)->
-        readCommand<wimemac::convergence::PhyUserCommand>(compound->getCommandPool())->local.interference;
+    
+    wns::Power rxPower_ = friends.phyuser->getRxPower(compound->getCommandPool());
+    wns::Power interference_ = friends.phyuser->getInterference(compound->getCommandPool());
 
     wns::Ratio sinr_ = wns::Ratio::from_dB(rxPower_.get_dBm() - interference_.get_dBm());
 
@@ -282,8 +282,7 @@ void ErrorModelling::processIncoming(const wns::ldk::CompoundPtr& compound)
     //m << " | interference " << interference_;
     //MESSAGE_END();
 
-    wimemac::convergence::PhyMode phyMode_ = getFUN()->getCommandReader(managerCommandName)->
-        readCommand<wimemac::lowerMAC::ManagerCommand>(compound->getCommandPool())->getPhyMode();
+    wimemac::convergence::PhyMode phyMode_ = friends.manager->getPhyMode(compound->getCommandPool());
 
     ErrorModellingCommand* emc = activateCommand(compound->getCommandPool());
     emc->local.sinr = sinr_;

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -35,9 +35,7 @@
 #include <WIMEMAC/convergence/TxDurationSetter.hpp>
 #include <WIMEMAC/convergence/ITxStartEnd.hpp>
 
-#include <WNS/service/phy/ofdma/Handler.hpp>
-#include <WNS/service/phy/ofdma/Notification.hpp>
-#include <WNS/service/phy/ofdma/DataTransmission.hpp>
+#include <WIMEMAC/convergence/IPhyServices.hpp>
 
 #include <WNS/service/dll/Address.hpp>
 
@@ -68,7 +66,8 @@ namespace wimemac { namespace convergence {
         public wns::ldk::fu::Plain<PhyUser, PhyUserCommand>,
         public wns::service::phy::ofdma::Handler,
         public wns::events::CanTimeout,
-        public TxStartEndNotification
+        public TxStartEndNotification,
+        public wimemac::convergence::IPhyServices
     {
 
     public:
@@ -76,13 +75,13 @@ namespace wimemac { namespace convergence {
         virtual ~PhyUser();
 
         /** @brief Interface to lower layer wns::service::phy::ofdma::Handler */
-        virtual void onData(wns::osi::PDUPtr, wns::service::phy::power::PowerMeasurementPtr);
+        void onData(wns::osi::PDUPtr, wns::service::phy::power::PowerMeasurementPtr);
 
         /** @brief Handling of the services */
-        virtual void setNotificationService(wns::service::Service* phy);
-        virtual wns::service::phy::ofdma::Notification* getNotificationService() const;
-        virtual void setDataTransmissionService(wns::service::Service* phy);
-        virtual wns::service::phy::ofdma::DataTransmission* getDataTransmissionService() const;
+        void setNotificationService(wns::service::Service* phy);
+        wns::service::phy::ofdma::Notification* getNotificationService() const;
+        void setDataTransmissionService(wns::service::Service* phy);
+        wns::service::phy::ofdma::DataTransmission* getDataTransmissionService() const;
 
         /** @brief Handling of PhyModes */
         PhyModeProvider* getPhyModeProvider();

@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -39,7 +39,7 @@ namespace wns { namespace node {
 }}
 
 namespace wimemac { namespace convergence {
-    class PhyUser;
+    class IPhyServices;
 
     /**
      * @brief Encapsulates the access to the OFDM(A)-PHY
@@ -48,7 +48,7 @@ namespace wimemac { namespace convergence {
         public virtual wns::CloneableInterface
 	{
 	public:
-		virtual void operator()(PhyUser*, const wns::ldk::CompoundPtr& compound) = 0;
+		virtual void operator()(IPhyServices*, const wns::ldk::CompoundPtr& compound) = 0;
 		virtual ~OFDMAAccessFunc(){}
 		OFDMAAccessFunc():
 			transmissionStart(-1.0),
@@ -65,7 +65,7 @@ namespace wimemac { namespace convergence {
 		public wns::Cloneable<BroadcastOFDMAAccessFunc>
 	{
 	public:
-		virtual void operator()(PhyUser*, const wns::ldk::CompoundPtr&);
+		virtual void operator()(IPhyServices*, const wns::ldk::CompoundPtr&);
 	};
 
 	class OmniUnicastOFDMAAccessFunc:
@@ -73,7 +73,7 @@ namespace wimemac { namespace convergence {
 		public wns::Cloneable<OmniUnicastOFDMAAccessFunc>
 	{
 	public:
-		virtual void operator()(PhyUser*, const wns::ldk::CompoundPtr&);
+		virtual void operator()(IPhyServices*, const wns::ldk::CompoundPtr&);
 		wns::node::Interface* destination;
 	};
 
@@ -82,7 +82,7 @@ namespace wimemac { namespace convergence {
 	class StopTransmission
 	{
 	public:
-		StopTransmission( PhyUser* phyUser_, const wns::ldk::CompoundPtr& compound_, int subBand_ = 0) :
+		StopTransmission( IPhyServices* phyUser_, const wns::ldk::CompoundPtr& compound_, int subBand_ = 0) :
 			phyUser( phyUser_ ),
 			compound( compound_ ),
 			subBand( subBand_ )
@@ -91,7 +91,7 @@ namespace wimemac { namespace convergence {
 		void operator()();
 
 	private:
-		PhyUser* phyUser;
+		IPhyServices* phyUser;
 		wns::ldk::CompoundPtr compound;
 		int subBand;
 	};
@@ -99,7 +99,7 @@ namespace wimemac { namespace convergence {
 	class StartBroadcastTransmission
 	{
 	public:
-		StartBroadcastTransmission( PhyUser* phyUser_,
+		StartBroadcastTransmission( IPhyServices* phyUser_,
 									const wns::ldk::CompoundPtr& compound_,
 									int subBand_ = 0):
 			phyUser( phyUser_ ),
@@ -110,7 +110,7 @@ namespace wimemac { namespace convergence {
 		void operator()();
 
 	protected:
-		PhyUser* phyUser;
+		IPhyServices* phyUser;
 		wns::ldk::CompoundPtr compound;
 		int subBand;
 	};
@@ -118,7 +118,7 @@ namespace wimemac { namespace convergence {
 	class StartTransmission
 	{
 	public:
-		StartTransmission( PhyUser* phyUser_, const wns::ldk::CompoundPtr& compound_,
+		StartTransmission( IPhyServices* phyUser_, const wns::ldk::CompoundPtr& compound_,
 						   wns::node::Interface* dstStation_, int subBand_ = 0
 						   ) :
 			phyUser( phyUser_ ),
@@ -130,7 +130,7 @@ namespace wimemac { namespace convergence {
 		void operator()();
 
 	protected:
-		PhyUser* phyUser;
+		IPhyServices* phyUser;
 		wns::ldk::CompoundPtr compound;
 		wns::node::Interface* dstStation;
 		int subBand;

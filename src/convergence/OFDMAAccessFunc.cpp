@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -27,7 +27,7 @@
  ******************************************************************************/
 
 #include <WIMEMAC/convergence/OFDMAAccessFunc.hpp>
-#include <WIMEMAC/convergence/PhyUser.hpp>
+#include <WIMEMAC/convergence/IPhyServices.hpp>
 
 
 
@@ -50,7 +50,7 @@ void StartBroadcastTransmission::operator()()
     phyUser->getDataTransmissionService()->startBroadcast( compound, subBand, defaultTxPower, 1);
 }
 
-void BroadcastOFDMAAccessFunc::operator()(PhyUser* phyUser_, const wns::ldk::CompoundPtr& compound_ )
+void BroadcastOFDMAAccessFunc::operator()(IPhyServices* phyUser_, const wns::ldk::CompoundPtr& compound_ )
 {
 	assure(transmissionStart < transmissionStop, "transmissionStart is larger than transmissionStop");
 
@@ -62,7 +62,7 @@ void BroadcastOFDMAAccessFunc::operator()(PhyUser* phyUser_, const wns::ldk::Com
 }
 
 
-void OmniUnicastOFDMAAccessFunc::operator()(PhyUser* phyUser_, const wns::ldk::CompoundPtr& compound_ )
+void OmniUnicastOFDMAAccessFunc::operator()(IPhyServices* phyUser_, const wns::ldk::CompoundPtr& compound_ )
 {
 	StartTransmission start ( phyUser_, compound_, destination );
 	wns::simulator::getEventScheduler()->schedule( start,  transmissionStart );

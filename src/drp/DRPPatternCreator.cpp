@@ -3,7 +3,7 @@
  * This file is part of openWNS (open Wireless Network Simulator)
  * _____________________________________________________________________________
  *
- * Copyright (C) 2004-2010
+ * Copyright (C) 2004-2011
  * Chair of Communication Networks (ComNets)
  * Kopernikusstr. 5, D-52074 Aachen, Germany
  * phone: ++49-241-80-27910,
@@ -90,7 +90,7 @@ DRPPatternCreator::CalcMissingPackets(Vector& allocMap_)
             wns::simulator::Time TXOP = 0;
             TXOP = tmpAdj * SlotDuration - GuardDuration;
 
-            double FTDuration_ = friends.manager->protocolCalculator->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode) + 2*SIFSduration + ACKduration;
+            double FTDuration_ = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode) + 2*SIFSduration + ACKduration;
 
             PosPacketpSF += floor(TXOP/FTDuration_);
             tmpAdj = 0;
@@ -113,7 +113,7 @@ DRPPatternCreator::SetTrafficChar(int PacketpFrame, int BitpFrame, int MaxCompou
 {
     MaxPacketSize = MaxCompoundSize;
     PacketpSF = ceil( PacketpFrame * (1 + patternPEROffset) ); // Add traffic bandwidth according to max allowed PER
-    DataDuration = friends.manager->protocolCalculator->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode);
+    DataDuration = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode);
     FTDuration = DataDuration + 2*SIFSduration + ACKduration;
     DivideSFintoAreas = reservationBlocks;
     ReservationGap = (SlotpSF - NumberOfBPSlots) / DivideSFintoAreas;
@@ -147,7 +147,7 @@ void
 DRPPatternCreator::UpdateTrafficChar()
 {
     // Update TrafficChar according to changes of phymode
-    DataDuration = friends.manager->protocolCalculator->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode);
+    DataDuration = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode);
     FTDuration = DataDuration + 2*SIFSduration + ACKduration;
     mAdjSlot = ceil( (double) FTDuration / (double) SlotDuration);
     AdjSlot = ceil( ((double)PacketpArea * (double)FTDuration) / (double)SlotDuration);
@@ -967,7 +967,7 @@ DRPPatternCreator::CalcPacketpArea(int first, int last)
             wns::simulator::Time TXOP = 0;
             TXOP = tmpAdj * SlotDuration - GuardDuration;
 
-            double FTDuration_ = friends.manager->protocolCalculator->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode) + 2*SIFSduration + ACKduration;
+            double FTDuration_ = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode) + 2*SIFSduration + ACKduration;
 
             PacketpArea += floor(TXOP/FTDuration_);
             tmpAdj = 0;
