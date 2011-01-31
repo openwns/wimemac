@@ -172,7 +172,7 @@ Manager::doIsAccepting(const wns::ldk::CompoundPtr& compound) const
     mc->peer.phyMode = friends.drpScheduler->getPhyMode(rx, -1);
 
     //return getConnector()->hasAcceptor(compound2send);
-    return wns::ldk::Processor<Manager>::doIsAccepting(compound2send);
+    return (wns::ldk::Processor<Manager>::doIsAccepting(compound2send));
 }
 
 bool
@@ -211,7 +211,7 @@ Manager::getPhyUser()
 wimemac::management::ProtocolCalculator*
 Manager::getProtocolCalculator()
 {
-    return protocolCalculator;
+    return (protocolCalculator);
 }
 
 dll::Layer2::StationType
@@ -427,14 +427,14 @@ Manager::getInterference(const wns::ldk::CommandPool* commandPool)
 wimemac::convergence::MCS
 Manager::getMaxPosMCS(wns::Ratio sinr_, Bit maxCompoundSize_, double per_)
 {
-    return friends.errorModelling->getMaxPosMCS(sinr_, maxCompoundSize_, per_);
+    return (friends.errorModelling->getMaxPosMCS(sinr_, maxCompoundSize_, per_));
 }
 
 
 double
 Manager::getErrorRateForCommandFrames(wns::Ratio sinr_, Bit maxCompoundSize_)
 {
-    return friends.errorModelling->getErrorRateForCommandFrames(sinr_,maxCompoundSize_);
+    return (friends.errorModelling->getErrorRateForCommandFrames(sinr_,maxCompoundSize_));
 }
 
 int
@@ -452,13 +452,13 @@ Manager::getMASNumber(wns::simulator::Time time_)
 double
 Manager::getDesiredPER()
 {
-    return friends.drpScheduler->getDesiredPER();
+    return (friends.drpScheduler->getDesiredPER());
 }
 
 double
 Manager::getPatternPEROffset()
 {
-    return friends.drpScheduler->getPatternPEROffset();
+    return (friends.drpScheduler->getPatternPEROffset());
 }
 
 wns::simulator::Time
@@ -527,7 +527,7 @@ Manager::SetBPDuration(wns::simulator::Time duration)
 bool 
 Manager::startPCAtransmission()
 {
-    friends.drpScheduler->startPCAtransmission();
+    return(friends.drpScheduler->startPCAtransmission());
 }
  
 void
@@ -545,25 +545,25 @@ Manager::txOPCloseIn(wns::simulator::Time duration)
 int
 Manager::getNumOfRetransmissions(const wns::ldk::CompoundPtr& compound)
 {
-    friends.drpScheduler->getNumOfRetransmissions(compound);
+    return(friends.drpScheduler->getNumOfRetransmissions(compound));
 }
 
 wns::service::dll::UnicastAddress
 Manager::getCurrentTransmissionTarget()
 {
-    friends.drpScheduler->getCurrentTransmissionTarget();
+    return(friends.drpScheduler->getCurrentTransmissionTarget());
 }
 
 bool
 Manager::UpdateMapWithPeerAvailabilityMap(wns::service::dll::UnicastAddress rx , Vector& DRPMap)
 {
-    friends.drpScheduler->UpdateMapWithPeerAvailabilityMap(rx, DRPMap);
+    return(friends.drpScheduler->UpdateMapWithPeerAvailabilityMap(rx, DRPMap));
 }
 
 bool
 Manager::adjustMCSdown(wns::service::dll::UnicastAddress rx)
 {
-    friends.drpScheduler->adjustMCSdown(rx);
+    return(friends.drpScheduler->adjustMCSdown(rx));
 }
 
 void

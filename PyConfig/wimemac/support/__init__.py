@@ -36,7 +36,7 @@ class Node(object):
 class idGenerator:
     nextId = None
     def __init__(self):
-        self.nextId = 1
+        self.nextId = 0
     def next(self):
         self.nextId += 1
         return self.nextId
