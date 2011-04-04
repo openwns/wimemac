@@ -60,17 +60,23 @@ class ScenarioDrawer(object):
             wallOrientations.append('v')
 
 
+        #evaluate min and max coordinates for a proper scenario scaling
         xpos = []
         ypos = []
 
         for position in stationPositions:
             xpos.append(position[0])
             ypos.append(position[1])
+        for position in wallPositions:
+            xpos.append(position[0])
+            ypos.append(position[1])
+            xpos.append(position[2])
+            ypos.append(position[3])
 
         xlen = max(xpos) - min(xpos)
         ylen = max(ypos) - min(ypos)
 
-        wallThickness = 0.02 * xlen
+        wallThickness = 0.01 * max(xlen,ylen)
 
           
         paddingx = xlen * 0.1
@@ -89,7 +95,7 @@ class ScenarioDrawer(object):
 
         #at first, the stations are placed:
         for position in stationPositions:
-            c=Circle((position[0], position[1]), 0.02 * xlen, facecolor="blue")
+            c=Circle((position[0], position[1]), 0.01 * xlen, facecolor="blue")
 
             pylab.gca().add_patch(c)
 

@@ -122,22 +122,22 @@ namespace wimemac { namespace helper { namespace contextprovider {
     };
 
     /**
-	 * @brief Context provider for a given compound: Filters by the index of the
-	 *    MCS with which the compound was send (will be send)
-	 *
-	 * The information is read from the phyUserCommand
-	 */
+     * @brief Context provider for a given compound: Filters by the index of the
+     *    MCS with which the compound was send (will be send)
+     *
+     * The information is read from the phyUserCommand
+     */
     class DataBitsPerSymbol:
-        virtual public wns::probe::bus::CommandContextProvider<wimemac::lowerMAC::ManagerCommand>
+        virtual public wns::probe::bus::CommandContextProvider<wimemac::IKnowsFrameTypeCommand>
     {
     public:
         DataBitsPerSymbol(wns::ldk::fun::FUN* fun, std::string managerCommandName):
-            wns::probe::bus::CommandContextProvider<wimemac::lowerMAC::ManagerCommand>(fun, managerCommandName, "MAC.CompoundDBPS")
+            wns::probe::bus::CommandContextProvider<wimemac::IKnowsFrameTypeCommand>(fun, managerCommandName, "MAC.CompoundDBPS")
             {};
 
     private:
         virtual void
-        doVisitCommand(wns::probe::bus::IContext& c, const wimemac::lowerMAC::ManagerCommand* command) const
+        doVisitCommand(wns::probe::bus::IContext& c, const wimemac::IKnowsFrameTypeCommand* command) const
             {
                 wimemac::convergence::PhyMode phymode = command->getPhyMode();
                 c.insertInt(this->key, phymode.getDataRate());
@@ -145,22 +145,22 @@ namespace wimemac { namespace helper { namespace contextprovider {
     };
 
     /**
-	 * @brief Context provider for a given compound: Filters by the number of
+     * @brief Context provider for a given compound: Filters by the number of
      *    spatial streams with which the compound was send (will be send)
-	 *
-	 * The information is read from the phyUserCommand
-	 */
+     *
+     * The information is read from the phyUserCommand
+     */
     class SpatialStreams :
-        virtual public wns::probe::bus::CommandContextProvider<wimemac::lowerMAC::ManagerCommand>
+        virtual public wns::probe::bus::CommandContextProvider<wimemac::IKnowsFrameTypeCommand>
     {
     public:
         SpatialStreams(wns::ldk::fun::FUN* fun, std::string managerCommandName):
-            wns::probe::bus::CommandContextProvider<wimemac::lowerMAC::ManagerCommand>(fun, managerCommandName, "MAC.CompoundSpatialStreams")
+            wns::probe::bus::CommandContextProvider<wimemac::IKnowsFrameTypeCommand>(fun, managerCommandName, "MAC.CompoundSpatialStreams")
             {};
 
     private:
         virtual void
-        doVisitCommand(wns::probe::bus::IContext& c, const wimemac::lowerMAC::ManagerCommand* command) const
+        doVisitCommand(wns::probe::bus::IContext& c, const wimemac::IKnowsFrameTypeCommand* command) const
             {
                 wimemac::convergence::PhyMode mcs = command->getPhyMode();
                 c.insertInt(this->key, mcs.getNumberOfSpatialStreams());
