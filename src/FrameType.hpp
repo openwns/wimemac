@@ -30,9 +30,13 @@
 #define WIMEMAC_FRAMETYPE_HPP
 
 #include <WNS/ldk/Command.hpp>
+#include <WIMEMAC/convergence/PhyMode.hpp>
 
 namespace wimemac {
 
+    namespace convergence { 
+        class PhyMode;
+    }
 
     enum CompoundType {
         //Standard and Burst through Phymode.PreambleMode
@@ -52,6 +56,8 @@ namespace wimemac {
     public:
         virtual CompoundType getCompoundType() = 0;
         virtual bool isPreamble() const = 0;
+
+        virtual wimemac::convergence::PhyMode getPhyMode() const = 0;
     };
 }
 
