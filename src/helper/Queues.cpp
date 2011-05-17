@@ -181,6 +181,12 @@ Queues::RemoveCompounds(wns::service::dll::UnicastAddress rx)
         <<" Queue size now: " << queues[rx].pduQueue.size());
 }
 
+void
+Queues::onExtendedReservation(wns::service::dll::UnicastAddress rx)
+{
+    queues[rx].RemoveCompounds = deleteQueues;   
+}
+
 wns::service::dll::UnicastAddress
 Queues::getNextPCAReceiver()
 {

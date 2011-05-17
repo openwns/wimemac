@@ -78,6 +78,9 @@ class Queues:
         virtual
         void RemoveCompounds(wns::service::dll::UnicastAddress rx);
 
+        void
+        onExtendedReservation(wns::service::dll::UnicastAddress rx);
+        
         wns::service::dll::UnicastAddress
         getNextPCAReceiver();
 
