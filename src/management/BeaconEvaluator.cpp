@@ -38,7 +38,6 @@ BeaconEvaluator::BeaconEvaluator()
     DRPmapManager = new drp::DRPmap(256);
     hasPendingProbe = false;
     requestedProbes.drpAvailability = 0;
-    FirstEval = true;
 }
 
 void
@@ -146,7 +145,7 @@ BeaconEvaluator::BeaconExamination(wns::service::dll::UnicastAddress tx, wns::se
                     DRPmanager = DRPIncomingConnections.find(tx);
                     if(DRPIECommand.isAdditionalDRPIE == false)
                     {
-                        // DRPIE is a standard DPRIE from the transmission owner
+                        // DRPIE is a standard DRPIE from the transmission owner
                         if(DRPIECommand.reasoncode != BeaconCommand::Accept)
                         {
                             MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: Update Status "
@@ -201,21 +200,17 @@ BeaconEvaluator::BeaconExamination(wns::service::dll::UnicastAddress tx, wns::se
                     else
                     {
                         // DRPIE is an additional DRPIE created for merging
-                        if(DRPmanager->HasPendingDRPMerge())
-                        {
-                            // DRP merge is already known -> update
-                            DRPmanager->SetMergeReasonCode(DRPIECommand.reasoncode);
-                            DRPmanager->SetMergeStatus(DRPIECommand.status);
+                        // update status of merge process
+                        DRPmanager->SetMergeReasonCode(DRPIECommand.reasoncode);
+                        DRPmanager->SetMergeStatus(DRPIECommand.status);
 
-                            if(DRPIECommand.status == true)
-                            {
-                                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: Merge DRPIE was accepted -> merging reservation patterns");
-                                DRPmanager->MergePatterns();
-                            }
-                        }
-                        else
+                        if(DRPIECommand.status == true && DRPIECommand.reasoncode == BeaconCommand::Accept)
                         {
-                            assure(false, "False State: Got MergeDRPIE from target while owner has no MergeStatus");
+                            assure(DRPIECommand.DRPAlloc == DRPmanager->GetMergePattern()  , "Accepted additional pattern from " << tx << " differs from pattern of owner");
+                            
+                            MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: Merge DRPIE was accepted -> merging reservation patterns");
+                            DRPmanager->MergePatterns();
+                            
                         }
                     }
 
@@ -248,15 +243,38 @@ BeaconEvaluator::BeaconExamination(wns::service::dll::UnicastAddress tx, wns::se
             {
                 if(DRPIECommand.address != iam)
                 {
-                    // Only respect the proposed pattern if it's not for me! Otherwise the negotiation will be conflicted
-                    MESSAGE_SINGLE(NORMAL, logger, "Received a DRPIE with pending negotiation for address " << DRPIECommand.address << " from address " << tx << ". The proposed reservation will be respected until final state is known");
                     
-                    // Since only other DRP reservations need to respect the ongoing negotiation PCA is still usable -> Soft DRP Map
-                    UpdateGlobalSoftDRPMap(DRPIECommand.DRPAlloc);
+                    if (!(DRPIECommand.reasoncode == BeaconCommand::Conflict || DRPIECommand.reasoncode == BeaconCommand::Denied))
+                    {
+                        // Only respect the proposed pattern if it's not for me! Otherwise the negotiation will be conflicted
+                        MESSAGE_SINGLE(NORMAL, logger, "Received a DRPIE with pending negotiation for address " << DRPIECommand.address << " from address " << tx << ". The proposed reservation will be respected until final state is known");
+                        
+                        // Since only other DRP reservations need to respect the ongoing negotiation PCA is still usable -> Soft DRP Map
+                        if (DRPIECommand.devicetype == BeaconCommand::Target)
+                        {
+                            DRPmapManager->UpdatePendingDRPMap(DRPIECommand.address, tx, DRPIECommand.DRPAlloc);
+                        }
+                        else
+                        {
+                            DRPmapManager->UpdatePendingDRPMap(tx, DRPIECommand.address, DRPIECommand.DRPAlloc);
+                        }
+                    }
+                    else
+                    {
+                        assure(DRPIECommand.devicetype == BeaconCommand::Target, "Received a reasoncode conflict/denied from an Owner! Not an expected behaviour" );
+                        
+                        MESSAGE_SINGLE(NORMAL, logger, "Received a DRPIE with a denied reservation for address " << DRPIECommand.address << " from address " << tx << ". Earlier respected MASs for this connection are marked as free");
+                        
+                        DRPmapManager->ReleasePendingDRPMap(DRPIECommand.address, tx);
+                    }
+                
+                
                 }
             }
         }
     }
+    
+    
     
 } // end BeaconExamination
 
@@ -354,46 +372,72 @@ BeaconEvaluator::EvaluateConnection()
         // For all target managers check if there are new unestablished connections and evaluate pattern
         if((*it).second->GetStatus() == false)
         {
-            if(DRPmapManager->PossiblePattern((*it).second->GetPattern()))
+            if((*it).second->GetReasonCode() == BeaconCommand::Conflict || (*it).second->GetReasonCode() == BeaconCommand::Denied)
             {
-                (*it).second->SetStatus(true);
-                (*it).second->SetReasonCode(BeaconCommand::Accept);
-                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: DRP reservation is possible,"
-                    <<" setting status to true.");
-
+                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: DRP reservation with " << (*it).second->GetAddress() << " was conflicted/denied,"
+                    <<" keeping status until Owner sends a modified reservation." );
             }
             else
             {
-                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: DRP reservation impossible,"
-                    <<" set ReasonCode to conflict");
-                (*it).second->SetReasonCode(BeaconCommand::Conflict);
-                requestedProbes.drpAvailability = 3; // Send complete DRP Availability IE with conflict response
+                if(DRPmapManager->PossiblePattern((*it).second->GetPattern()))
+                {
+                    (*it).second->SetStatus(true);
+                    (*it).second->SetReasonCode(BeaconCommand::Accept);
+                    
+                    MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: DRP reservation with " << (*it).second->GetAddress() << " is possible,"
+                        <<" setting status to true." );
+                        
+                        for(int i = 0; i < 256; i++)
+                        {
+                        if((*it).second->GetPattern()[i] == true)
+                        {
+                            MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: accepting MAS " << i );
+                        }
+                    
+                        }
+
+                }
+                else
+                {
+                    MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: DRP reservation with "<< (*it).second->GetAddress() << " is impossible,"
+                        <<" set ReasonCode to conflict");
+                    (*it).second->SetReasonCode(BeaconCommand::Conflict);
+                    requestedProbes.drpAvailability = 3; // Send complete DRP Availability IE with conflict response
+                }
             }
         }
 
         // Check for merge patterns
         if((*it).second->HasPendingDRPMerge() && (*it).second->GetMergeStatus() == false)
         {
-            if(DRPmapManager->PossiblePattern((*it).second->GetMergePattern()))
+            if((*it).second->GetMergeReasonCode() == BeaconCommand::Conflict || (*it).second->GetMergeReasonCode() == BeaconCommand::Denied)
             {
-                (*it).second->SetMergeStatus(true);
-                (*it).second->SetMergeReasonCode(BeaconCommand::Accept);
-                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: additional DRP reservation is possible,"
-                    <<" setting status to true.");
-
+                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: additional DRP reservation with " << (*it).second->GetAddress() << " was conflicted/denied,"
+                    <<" keeping status until Owner sends a modified reservation." );
             }
             else
             {
-                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: additional DRP reservation impossible,"
-                    <<" set ReasonCode to conflict");
-                (*it).second->SetMergeReasonCode(BeaconCommand::Conflict);
-                requestedProbes.drpAvailability = 3; // Send complete DRP Availability IE with conflict response
+                if(DRPmapManager->PossiblePattern((*it).second->GetMergePattern()))
+                {
+                    (*it).second->SetMergeStatus(true);
+                    (*it).second->SetMergeReasonCode(BeaconCommand::Accept);
+                    MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: additional DRP reservation with " << (*it).second->GetAddress() << " is possible,"
+                        <<" setting status to true.");
+
+                }
+                else
+                {
+                    MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: additional DRP reservation with " << (*it).second->GetAddress() << " is impossible,"
+                        <<" set ReasonCode to conflict");
+                    (*it).second->SetMergeReasonCode(BeaconCommand::Conflict);
+                    requestedProbes.drpAvailability = 3; // Send complete DRP Availability IE with conflict response
+                }
             }
         }
 
         if((*it).second->GetReasonCode() == BeaconCommand::Accept && (*it).second->GetStatus() == true)
         {
-            MESSAGE_SINGLE(NORMAL, logger, "Updating DRP-Map of this station with a new reservation as target with partner " << (*it).second->GetAddress());
+            MESSAGE_SINGLE(NORMAL, logger, "Updating DRP-Map of this station with a reservation as target with partner " << (*it).second->GetAddress());
             if((*it).second->GetReservationType() == BeaconCommand::Hard)
             {
                 UpdateGlobalHardDRPMap((*it).second->GetPattern());
@@ -506,6 +550,7 @@ BeaconEvaluator::CreateDRPManager(wns::service::dll::UnicastAddress rx, int Comp
         MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: "
                                 <<"DRP reservation with DeviceType "<< DRPmanager->GetDeviceType());
 
+
         MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator has built a new drp connection manager for an outgoing" 
         << " DRP reservation, target is "<< rx);
 
@@ -556,7 +601,7 @@ BeaconEvaluator::CreateDRPIE(BeaconCommand* BeaconCommand)
             MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: build DRPIE as owner, reasoncode " << DRPIECommand.reasoncode <<" and "
                 <<"Status " << DRPIECommand.status);
 
-            if ((*it).second->HasPendingDRPMerge() && (*it).second->GetMergeReasonCode() == BeaconCommand::Accept)
+            if ((*it).second->HasPendingDRPMerge())
             {
                 // There is an additional DRP Map pending for acceptance and merge
                 BeaconCommand::DRP DRPIECommand;
@@ -572,8 +617,7 @@ BeaconEvaluator::CreateDRPIE(BeaconCommand* BeaconCommand)
 
                 BeaconCommand->PutDRPIE(DRPIECommand);
 
-                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: build additional DRPIE as owner for merge, reasoncode " << DRPIECommand.reasoncode <<" and"
-                    <<"Status " << DRPIECommand.status);
+                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: build additional DRPIE as owner for merge, reasoncode " << DRPIECommand.reasoncode <<" and Status " << DRPIECommand.status);
 
                 // Additional pattern was accepted -> merge with original one
                 if (DRPIECommand.status == true) assure(false, "False State: Owner should have merged an additional pattern with activated status");
@@ -629,8 +673,7 @@ BeaconEvaluator::CreateDRPIE(BeaconCommand* BeaconCommand)
 
                 BeaconCommand->PutDRPIE(DRPIECommand);
 
-                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: build additional DRPIE as target for merge, reasoncode " << DRPIECommand.reasoncode <<" and"
-                    <<"Status " << DRPIECommand.status);
+                MESSAGE_SINGLE(NORMAL, logger, "BeaconEvaluator: build additional DRPIE as target for merge, reasoncode " << DRPIECommand.reasoncode <<" and Status " << DRPIECommand.status);
 
                 // Additional pattern was accepted -> merge with original one
                 if (DRPIECommand.reasoncode == BeaconCommand::Accept && DRPIECommand.status == true)
@@ -755,6 +798,12 @@ BeaconEvaluator::UpdateMapWithPeerAvailabilityMap(wns::service::dll::UnicastAddr
     else return false;
 }
 
+void
+BeaconEvaluator::ClearAvailabilityBitmap()
+{
+    rxAvailabilityBitmap.clear();
+}
+
 Vector
 BeaconEvaluator::getAllocatedMASs()
 {
@@ -794,7 +843,8 @@ BeaconEvaluator::ExamineBeaconPeriodOccupancy(wns::service::dll::UnicastAddress 
   for (int i = 0 ; i < BeaconCommand->peer.BPOIE.IE.size();i++)
   {
     MESSAGE_SINGLE(NORMAL, logger, "ExamineBeaconPeriodOccupancy, I've got a BPOIE from my neighbour " << tx <<", lets have a look:  " 
-    << i << " Address: " << BeaconCommand->peer.BPOIE.IE[i]);
+    << i
+    << " Address: " << BeaconCommand->peer.BPOIE.IE[i]);
   }
   
   //if the current Beacon Period Occupancy Vector is smaller than the Beacon Period Size announced in the received Beacon, the Vector will be increased to store the information

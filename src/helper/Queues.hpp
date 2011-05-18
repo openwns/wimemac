@@ -79,7 +79,7 @@ class Queues:
         void RemoveCompounds(wns::service::dll::UnicastAddress rx);
 
         void
-        onExtendedReservation(wns::service::dll::UnicastAddress rx);
+        resetQueue(wns::service::dll::UnicastAddress rx);
         
         wns::service::dll::UnicastAddress
         getNextPCAReceiver();

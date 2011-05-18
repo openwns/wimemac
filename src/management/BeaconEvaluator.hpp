@@ -93,6 +93,7 @@ typedef std::vector<bool> Vector;
             void SetLogger(wns::logger::Logger _logger);
 
             bool UpdateMapWithPeerAvailabilityMap(wns::service::dll::UnicastAddress rx , Vector& DRPMap);
+            void ClearAvailabilityBitmap();
 
             /** @brief Get the PhyMode for a transmission partner*/
             wimemac::convergence::PhyMode
@@ -156,7 +157,6 @@ typedef std::vector<bool> Vector;
             wns::container::Registry<wns::service::dll::UnicastAddress, Vector> rxAvailabilityBitmap;
             /** @brief ProbeIEs */
             bool hasPendingProbe;
-            bool FirstEval;
             wns::container::Registry<wns::service::dll::UnicastAddress, std::queue<BeaconCommand::ProbeElementID> > pendingProbe;
             wns::logger::Logger logger;
             helper::IDRPQueueInterface* queueInterface;

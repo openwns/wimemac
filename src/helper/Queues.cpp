@@ -182,7 +182,7 @@ Queues::RemoveCompounds(wns::service::dll::UnicastAddress rx)
 }
 
 void
-Queues::onExtendedReservation(wns::service::dll::UnicastAddress rx)
+Queues::resetQueue(wns::service::dll::UnicastAddress rx)
 {
     queues[rx].RemoveCompounds = deleteQueues;   
 }

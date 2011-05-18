@@ -39,6 +39,7 @@
 namespace wimemac {
 namespace drp {
 typedef std::vector<bool> Vector;
+typedef wns::container::Registry<wns::service::dll::UnicastAddress, Vector > MASsperStation;
 
     class DRPmap
     {
@@ -47,13 +48,14 @@ typedef std::vector<bool> Vector;
             void UpdateHardDRPmap(Vector, wns::logger::Logger _logger);
             void UpdateSoftDRPmap(Vector, wns::logger::Logger _logger);
             void UpdateDRPmap(Vector UpdateMap, Vector& UpdatedMap);
+            
+            void UpdatePendingDRPMap(wns::service::dll::UnicastAddress, wns::service::dll::UnicastAddress, Vector);
+            void ReleasePendingDRPMap(wns::service::dll::UnicastAddress, wns::service::dll::UnicastAddress);
+            
             bool PossiblePattern(Vector CompareDRPMap);
             void GetPattern(wns::logger::Logger _logger);
             void GetGlobalPattern(Vector& GlobalPattern);
-            bool IsSpaceInGlobalPattern();
             Vector GetGlobalHardDRPmap();
-            bool isPatternValidated(); // Returns true if DRP-Map has no additional entries that appear just once
-
             void SetLogger(wns::logger::Logger _logger);
             
             void setBPSlots(int numberOfBPSlots_);
@@ -62,9 +64,14 @@ typedef std::vector<bool> Vector;
             void onBPStarted();
 
         private:
+            Vector GetPendingDRPmap();
+            
             std::deque<Vector> globalHardDRPmapVec;
             std::deque<Vector> globalSoftDRPmapVec;
             std::deque<Vector> globalEraseDRPmapVec;
+            std::deque<wns::container::Registry<wns::service::dll::UnicastAddress, MASsperStation > > PendingDRPMapVec;
+            
+
             int mMaxLostBeacons;
             int numberOfBPSlots;
             bool isPatternValid;
@@ -72,6 +79,7 @@ typedef std::vector<bool> Vector;
             Vector globalHardDRPmap;
             Vector globalSoftDRPmap;
             Vector globalEraseDRPmap;
+            wns::container::Registry<wns::service::dll::UnicastAddress, MASsperStation > PendingDRPMap;
             
             wns::logger::Logger logger;
         };

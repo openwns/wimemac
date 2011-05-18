@@ -41,6 +41,7 @@ DRPManager::DRPManager(wns::service::dll::UnicastAddress TargetAddress,BeaconCom
             DRPPatternCreator(logger_, patternPEROffset_, TargetAddress),
 
             reasoncode(InitialReason),
+            mergereasoncode(BeaconCommand::Accept),
             reservationtype(InitialType),
             devicetype(InitialDevice),
             peerAddress(TargetAddress),
@@ -69,6 +70,7 @@ DRPManager::DRPManager(wns::service::dll::UnicastAddress TargetAddress,BeaconCom
             DRPPatternCreator(logger_, patternPEROffset_, TargetAddress),
 
             reasoncode(InitialReason),
+            mergereasoncode(BeaconCommand::Accept),
             reservationtype(InitialType),
             devicetype(InitialDevice),
             peerAddress(TargetAddress),
@@ -136,11 +138,25 @@ DRPManager::GetMergeReasonCode()
 bool
 DRPManager::areMASsAvailable(Vector DRPGlobal)
 {
+   //Update DRPGlobal with DRP Availability from peer
+    if (friends.manager->UpdateMapWithPeerAvailabilityMap( peerAddress, DRPGlobal))
+    {
+        MESSAGE_SINGLE(NORMAL, logger, "areMASsAvailable: Updated DRPGlobalMap with availabilityMap from address " << peerAddress << " to support ongoing pattern creation");
+
+    }
+    else MESSAGE_SINGLE(NORMAL, logger, "areMASsAvailable: There is no availabilityMap to update with or none of the available slots are unusable by address " << peerAddress);
+
     for(int i = 0; i<DRPGlobal.size(); i++)
     {
         // MASs are available if there is space in the global MAP
-        if(DRPGlobal[i] == true)
+        if(DRPGlobal[i] == false)
+        {
+          MESSAGE_BEGIN(NORMAL, logger, m, "");
+          m << "DRPManager searches for free MASs "<< i << " " << DRPGlobal[i] ;MESSAGE_END();
+
+            
             return true;
+        }
     }
     return false;
   
@@ -150,7 +166,7 @@ void
 DRPManager::FindNewPattern(Vector DRPGlobal)
 {
     MESSAGE_BEGIN(NORMAL, logger, m, "");
-    m << "Alloc";
+    m << "Find New Pattern, search for free MAS first";
     MESSAGE_END();
 
     bool peerStationsIsFullyAvailable = true;
@@ -182,8 +198,6 @@ DRPManager::FindNewPattern(Vector DRPGlobal)
 void
 DRPManager::CreateAdditionalPattern(Vector DRPGlobal)
 {
-    // Initialise this new pattern with reason code accept
-    SetMergeReasonCode(BeaconCommand::Accept);
     bool peerStationsIsFullyAvailable = true;
     
     Vector::iterator itg;
@@ -240,7 +254,8 @@ DRPManager::GetMergePattern()
 void
 DRPManager::ResolveConflict()
 {
-    for(int i = 0; i < DRPAllocMap.size(); i++)
+  MESSAGE_SINGLE(NORMAL, logger, "Conflict");
+  for(int i = 0; i < DRPAllocMap.size(); i++)
     {
         DRPAllocMap[i] = false;
     }
@@ -309,10 +324,10 @@ DRPManager::GetMergeStatus()
 bool
 DRPManager::IsMapCreated()
 {
-if(find(DRPAllocMap.begin(), DRPAllocMap.end(), true) == DRPAllocMap.end())
-    return false;
-else
-    return true;
+    if(find(DRPAllocMap.begin(), DRPAllocMap.end(), true) == DRPAllocMap.end())
+        return false;
+    else
+        return true;
 }
 
 bool
@@ -386,6 +401,8 @@ DRPManager::MergePatterns()
 
     mergeconnectionstatus = false;
     hasPendingDRPMerge = false;
+    // The next additional pattern is started with reasoncode Accept
+    mergereasoncode = BeaconCommand::Accept;
 }
 
 void

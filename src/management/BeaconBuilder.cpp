@@ -140,19 +140,16 @@ BeaconBuilder::doWakeup()
     //Inform DRPmapManager about a new BP start
     DRPmapManager->onBPStarted();
     friends.manager->onBPStart(BPDuration);
-
-    //Check DRPmapManager if pattern is validated
-    if(DRPmapManager->isPatternValidated() == true)
-    {
-        //Evaluate unestablished connection patterns
-        BeaconEvaluator::EvaluateConnection();
-        //create new drp maps if nessecary
-        BeaconEvaluator::CreateDRPMaps();
-    }
-    else MESSAGE_SINGLE(NORMAL, logger, "BeaconBuilder: There might be an ongoing change in the DRPmap -> wait another SF before creating a new drp pattern or evaluating a reservation map!");
+    
+    //Evaluate unestablished connection patterns
+    BeaconEvaluator::EvaluateConnection();
+    //create new drp maps if nessecary
+    BeaconEvaluator::CreateDRPMaps();
 
     //Create beacon compound and send beacon
     doSendData(CreateBeacon());
+    // Clear Availability Bitmap to ensure the received map will only be used during the SF of reception to avoid changes not being recognized
+    BeaconEvaluator::ClearAvailabilityBitmap();
 
 }
 

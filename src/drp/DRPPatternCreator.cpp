@@ -117,9 +117,9 @@ DRPPatternCreator::SetTrafficChar(int PacketpFrame, int BitpFrame, int MaxCompou
     FTDuration = DataDuration + 2*SIFSduration + ACKduration;
     DivideSFintoAreas = reservationBlocks;
     ReservationGap = (SlotpSF - NumberOfBPSlots) / DivideSFintoAreas;
-    mAdjSlot = ceil( (double) FTDuration / (double) SlotDuration);
+    mAdjSlot = ceil( ((double) FTDuration + GuardDuration )/ (double) SlotDuration);
     PacketpArea = ceil( (double) PacketpSF / (double) DivideSFintoAreas);
-    AdjSlot = ceil( ((double)PacketpArea * (double)FTDuration) / (double)SlotDuration);
+    AdjSlot = ceil(  (((double)PacketpArea * (double)FTDuration) + GuardDuration) / (double)SlotDuration);
 
     if (AdjSlot > ReservationGap)
     {
@@ -149,8 +149,8 @@ DRPPatternCreator::UpdateTrafficChar()
     // Update TrafficChar according to changes of phymode
     DataDuration = friends.manager->getProtocolCalculator()->getDuration()->MSDU_PPDU((Bit)MaxPacketSize, phyMode);
     FTDuration = DataDuration + 2*SIFSduration + ACKduration;
-    mAdjSlot = ceil( (double) FTDuration / (double) SlotDuration);
-    AdjSlot = ceil( ((double)PacketpArea * (double)FTDuration) / (double)SlotDuration);
+    mAdjSlot = ceil( ((double) FTDuration + GuardDuration )/ (double) SlotDuration);
+    AdjSlot = ceil( (((double)PacketpArea * (double)FTDuration) + GuardDuration )/ (double)SlotDuration);
 
     if (AdjSlot > ReservationGap)
     {
@@ -853,7 +853,7 @@ DRPPatternCreator::BestEfficency(int MissingReservation)
                         FreeBefore = 0;
                     if(FreeBefore == AddSlot)
                         FreeAfter = 0;
-                    packet = floor((last+AddSlot - first)*SlotDuration / FTDuration);
+                    packet = floor( ( (last+AddSlot - first)*SlotDuration - GuardDuration )/ FTDuration);
                     TrainDuration = packet * FTDuration;
                     iFragmentDuration = (last + AddSlot - first)*SlotDuration - GuardDuration - TrainDuration;
 
@@ -869,12 +869,12 @@ DRPPatternCreator::BestEfficency(int MissingReservation)
                         if(!AllocAreaOutside(tmpFirst, tmpLast, FreeBefore))
                             MESSAGE_SINGLE(NORMAL, logger, "InitPattern: Reservation error");
 
-                        packet = floor((last+AddSlot - first)*SlotDuration / FTDuration);
+                        packet = floor(((last+AddSlot - first)*SlotDuration  - GuardDuration )/ FTDuration);
                         TrainDuration = packet * FTDuration;
                         iFragmentDuration = (last + AddSlot - first)*SlotDuration - GuardDuration - TrainDuration;
 
                         maxEfficiency.iFragmentDuration = iFragmentDuration;
-                        maxEfficiency.AdditionalPackets = packet - floor((last - first)*SlotDuration / FTDuration);
+                        maxEfficiency.AdditionalPackets = packet - floor( ((last - first)*SlotDuration - GuardDuration) / FTDuration);
                         MESSAGE_SINGLE(NORMAL, logger, "InitPattern: set fragmentation: "<< iFragmentDuration);
 
                         tmpFirst = last;
@@ -893,14 +893,14 @@ DRPPatternCreator::BestEfficency(int MissingReservation)
             else
             {
 
-                packet = floor((last+AddSlot - first)*SlotDuration / FTDuration);
+                packet = floor(((last+AddSlot - first)*SlotDuration  - GuardDuration )/ FTDuration);
                 TrainDuration = packet * FTDuration;
                 iFragmentDuration = (last + AddSlot - first)*SlotDuration - GuardDuration - TrainDuration;
                 MESSAGE_SINGLE(NORMAL, logger, "InitPattern: Calculate fragment, without split; addslot : " << AddSlot << " packets now: "<< packet 
                 << " train duration: " << TrainDuration << " Fragment duration: "
                 << iFragmentDuration);
 
-                if(maxEfficiency.iFragmentDuration < iFragmentDuration || maxEfficiency.AddSlot == 0)
+                if(maxEfficiency.iFragmentDuration > iFragmentDuration || maxEfficiency.AddSlot == 0)
                 {
                     MESSAGE_SINGLE(NORMAL, logger, "InitPattern: Fragmentation before : " << maxEfficiency.iFragmentDuration << " and now : " << iFragmentDuration);
                     maxEfficiency.AddSlot = AddSlot;
@@ -933,8 +933,14 @@ DRPPatternCreator::BestEfficency(int MissingReservation)
 
             maxEfficiency.Clear();
             MissingReservation -= maxEfficiency.AdditionalPackets;
-            if (MissingReservation < 0) MissingReservation = 0;
             MESSAGE_SINGLE(NORMAL, logger, "InitPattern: Missing: " << MissingReservation);
+            if (MissingReservation <= 0) 
+            {
+                MissingReservation = 0;
+                break;
+            }
+            
+            
         }
     }
 

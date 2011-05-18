@@ -384,7 +384,6 @@ DRPScheduler::onTimeout()
         MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler, Time is over, stop DRP transmission to " << AccessRx);
         SendBuffer[AccessRx]->StopBuffering();
         AccessPermission = false;
-        //DRPQueues->RemoveCompounds(AccessRx);
 
         MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler number of compounds in tempqueue: "<< SendBuffer[AccessRx]->numCompounds());
         //  MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler number of compound in main queue: "<< DRPQueues->numCompoundsForMacAddress(AccessRx));
