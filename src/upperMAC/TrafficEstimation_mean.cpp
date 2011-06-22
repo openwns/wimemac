@@ -88,32 +88,35 @@ TrafficEstimation_mean::doSendData(const wns::ldk::CompoundPtr& compound)
     friends.keyReader->readCommand<dll::UpperCommand>(commandPool);
     wns::service::dll::UnicastAddress currentAddress = unicastcommand->peer.targetMACAddress;
 
-    if (windowedTrafficPerAddress.find(currentAddress) == windowedTrafficPerAddress.end())//current address is a new address
+    if(friends.manager->getDRPchannelAccess()) // If DRP channel access is off don't estimate
     {
-        //wns::events::scheduler::Callable call = boost::bind(&TrafficEstimation_mean::QueueEval, this, currentAddress);
-        //wns::simulator::Time FrameDuration = 65.536E-3;
-        //scheduler->scheduleDelay(call, 10*FrameDuration);
-        
-        MESSAGE_SINGLE(NORMAL, this->logger, "Beginning traffic measurement for " << averageOverSFs << " frames for address " << currentAddress);
-
-        //Initialization of the measurement variables
-        measurementDatapSF currentData;
-        currentData.sentCompounds = 1;
-        currentData.maxCompoundSize = compound->getLengthInBits();
-        currentData.bitsTotal = compound->getLengthInBits();
-
-        windowedTrafficPerAddress[currentAddress].push_back(currentData);
-    }
-    else    //current address is already in addressList
-    {
-        //adjustment of the measurement variables
-        int size = compound->getLengthInBits();
-        (windowedTrafficPerAddress[currentAddress].back()).sentCompounds++;
-        (windowedTrafficPerAddress[currentAddress].back()).bitsTotal += size;
-        if(size > (windowedTrafficPerAddress[currentAddress].back()).maxCompoundSize)
-            (windowedTrafficPerAddress[currentAddress].back()).maxCompoundSize = size;
+        if (windowedTrafficPerAddress.find(currentAddress) == windowedTrafficPerAddress.end())//current address is a new address
+        {
+            //wns::events::scheduler::Callable call = boost::bind(&TrafficEstimation_mean::QueueEval, this, currentAddress);
+            //wns::simulator::Time FrameDuration = 65.536E-3;
+            //scheduler->scheduleDelay(call, 10*FrameDuration);
             
-        //MESSAGE_SINGLE(NORMAL, this->logger, "Address " << currentAddress << "; sent compounds: " << addressList.find(currentAddress)->second.sentCompounds << "; biggest compound: " << addressList.find(currentAddress)->second.maxCompoundSize);
+            MESSAGE_SINGLE(NORMAL, this->logger, "Beginning traffic measurement for " << averageOverSFs << " frames for address " << currentAddress);
+
+            //Initialization of the measurement variables
+            measurementDatapSF currentData;
+            currentData.sentCompounds = 1;
+            currentData.maxCompoundSize = compound->getLengthInBits();
+            currentData.bitsTotal = compound->getLengthInBits();
+
+            windowedTrafficPerAddress[currentAddress].push_back(currentData);
+        }
+        else    //current address is already in addressList
+        {
+            //adjustment of the measurement variables
+            int size = compound->getLengthInBits();
+            (windowedTrafficPerAddress[currentAddress].back()).sentCompounds++;
+            (windowedTrafficPerAddress[currentAddress].back()).bitsTotal += size;
+            if(size > (windowedTrafficPerAddress[currentAddress].back()).maxCompoundSize)
+                (windowedTrafficPerAddress[currentAddress].back()).maxCompoundSize = size;
+                
+            //MESSAGE_SINGLE(NORMAL, this->logger, "Address " << currentAddress << "; sent compounds: " << addressList.find(currentAddress)->second.sentCompounds << "; biggest compound: " << addressList.find(currentAddress)->second.maxCompoundSize);
+        }
     }
 
     if(this->getConnector()->hasAcceptor(compound))
@@ -148,19 +151,23 @@ TrafficEstimation_mean::periodically()
     for(it = windowedTrafficPerAddress.begin(); it != windowedTrafficPerAddress.end() ;++it)
     {
         wns::service::dll::UnicastAddress rx = (*it).first;
+        
+        // initialize with false if key does not yet exist
+        if(NeedsNewEstimatePerAddress.find(rx) == NeedsNewEstimatePerAddress.end()) NeedsNewEstimatePerAddress[rx] = false;
+        
         // There is no estimation done yet or a new estimation needs to be done
         if((lastSetTrafficPerAddress.find(rx) == lastSetTrafficPerAddress.end()) ||
             (NeedsNewEstimatePerAddress[rx] == true))
         {
             // Delete the first evaluation since the traffic may have started other than at the beginning of the SF
-            if(NeedsNewEstimatePerAddress.find(rx) == NeedsNewEstimatePerAddress.end())
+            if(NeedsNewEstimatePerAddress[rx] == false)
             {
                 // This means this is the first evaluation for the specified address
                 MESSAGE_SINGLE(NORMAL, logger, "First window element is deleted due to different start of traffic generation and SF");
                 while((*it).second.size() > 0)
                     (*it).second.pop_front();
                     
-                NeedsNewEstimatePerAddress[rx] == true;
+                NeedsNewEstimatePerAddress[rx] = true;
             }
         
             // If enough SFs have been evaluated -> estimate traffic
@@ -188,57 +195,68 @@ TrafficEstimation_mean::periodically()
                 currentTraffic.BitspSF = ceil((double) currentData.bitsTotal / (double) windowedSFs);
                 currentTraffic.MaxCompoundSize = currentData.maxCompoundSize;
 
-                currentTrafficPerAddress[rx] = currentTraffic;
-                if(friends.manager->getDRPchannelAccess()) // If DRP channel access is off don't prepare a connection
+                if(currentTraffic.CompoundspSF > 0)
                 {
-                    if(!trafficEstimationConfig.overWriteEstimation)
+                
+                    if(friends.manager->getDRPchannelAccess()) // If DRP channel access is off don't prepare a connection
                     {
-                        if(lastSetTrafficPerAddress.find(rx) == lastSetTrafficPerAddress.end())
+                        if(!trafficEstimationConfig.overWriteEstimation)
                         {
-                            // This is the first traffic estimation for this target
-                            MESSAGE_SINGLE(NORMAL, logger, "Traffic measurement finished for this connection. Number of compounds: "
-                            << currentTraffic.CompoundspSF
-                            <<"; Bits per SF: "
-                            << currentTraffic.BitspSF
-                            << "; Maximum compound size : "
-                            << currentTraffic.MaxCompoundSize);
-                        
-                            friends.manager->prepareDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
+                            if(lastSetTrafficPerAddress.find(rx) == lastSetTrafficPerAddress.end())
+                            {
+                                // This is the first traffic estimation for this target
+                                MESSAGE_SINGLE(NORMAL, logger, "Traffic measurement finished for this connection. Number of compounds: "
+                                << currentTraffic.CompoundspSF
+                                <<"; Bits per SF: "
+                                << currentTraffic.BitspSF
+                                << "; Maximum compound size : "
+                                << currentTraffic.MaxCompoundSize);
+                            
+                                friends.manager->prepareDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
+                            }
+                            else
+                            {
+                                MESSAGE_SINGLE(NORMAL, logger, "Traffic measurement updated for this connection. Number of compounds: "
+                                << currentTraffic.CompoundspSF
+                                <<"; Bits per SF: "
+                                << currentTraffic.BitspSF
+                                << "; Maximum compound size : "
+                                << currentTraffic.MaxCompoundSize);
+                                
+                                friends.manager->updateDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
+                            }
                         }
                         else
                         {
-                            MESSAGE_SINGLE(NORMAL, logger, "Traffic measurement updated for this connection. Number of compounds: "
-                            << currentTraffic.CompoundspSF
+                            MESSAGE_SINGLE(NORMAL, logger, "Traffic measurement overwritten by manual values: "
+                            << trafficEstimationConfig.CompoundspSF
                             <<"; Bits per SF: "
-                            << currentTraffic.BitspSF
+                            << trafficEstimationConfig.BitspSF
                             << "; Maximum compound size : "
-                            << currentTraffic.MaxCompoundSize);
-                            
-                            friends.manager->updateDRPConnection(rx, currentTraffic.CompoundspSF, currentTraffic.BitspSF, currentTraffic.MaxCompoundSize);
+                            << trafficEstimationConfig.MaxCompoundSize);
+                        
+                            friends.manager->prepareDRPConnection(rx, trafficEstimationConfig.CompoundspSF, trafficEstimationConfig.BitspSF, trafficEstimationConfig.MaxCompoundSize);
                         }
-                    }
-                    else
-                    {
-                        MESSAGE_SINGLE(NORMAL, logger, "Traffic measurement overwritten by manual values: "
-                        << trafficEstimationConfig.CompoundspSF
-                        <<"; Bits per SF: "
-                        << trafficEstimationConfig.BitspSF
-                        << "; Maximum compound size : "
-                        << trafficEstimationConfig.MaxCompoundSize);
-                    
-                        friends.manager->prepareDRPConnection(rx, trafficEstimationConfig.CompoundspSF, trafficEstimationConfig.BitspSF, trafficEstimationConfig.MaxCompoundSize);
+                        
+                        // Save last set traffic characteristics
+                        lastSetTrafficPerAddress[rx] = currentTraffic;
                     }
                     
-                    // Save last set traffic characteristics
-                    lastSetTrafficPerAddress[rx] = currentTraffic;
+                    // Mark estimation as done
+                    NeedsNewEstimatePerAddress[rx] = false;
                 }
+                
+                else
+                {
+                    assure(false, "Traffic estimation for " << rx << " at STA " << friends.manager->getMACAddress() << " was started, but afterwards 0 compounds were estimated! Too low traffic!?");
+                }
+                
                 
                 // Once filled keep window at constant size
                 while((*it).second.size() >= averageOverSFs)
                     (*it).second.pop_front();
                 
-                // Mark estimation as done
-                NeedsNewEstimatePerAddress[rx] = false;
+                
             }
             else MESSAGE_SINGLE(NORMAL, logger, "So far only " << windowedSFs << " SFs are evaluated for address " << rx);
             
@@ -252,10 +270,10 @@ TrafficEstimation_mean::periodically()
             estimatedTraffic lastSetData = lastSetTrafficPerAddress[rx];
             if((thisSFData.sentCompounds > lastSetData.CompoundspSF*1.05) || (thisSFData.bitsTotal > lastSetData.BitspSF*1.05))
             {
-                MESSAGE_SINGLE(NORMAL, logger, "DEBUG : ThisSF SentCompd " << thisSFData.sentCompounds << " | LastSet ComppSF " << lastSetData.CompoundspSF);
-                MESSAGE_SINGLE(NORMAL, logger, "DEBUG : ThisSF TotalBits " << thisSFData.bitsTotal << " | LastSet BitspSF " << lastSetData.BitspSF);
+                MESSAGE_SINGLE(NORMAL, logger, "ThisSF SentCompd " << thisSFData.sentCompounds << " | LastSet ComppSF " << lastSetData.CompoundspSF);
+                //MESSAGE_SINGLE(NORMAL, logger, "ThisSF TotalBits " << thisSFData.bitsTotal << " | LastSet BitspSF " << lastSetData.BitspSF);
             
-                MESSAGE_SINGLE(NORMAL, logger, "The current traffic differs from the last set traffic characteristic by " << (thisSFData.sentCompounds / lastSetData.CompoundspSF -1.0)*100 << " % in compounds and " << (thisSFData.bitsTotal / lastSetData.BitspSF -1.0)*100 << " % in total bits");
+                MESSAGE_SINGLE(NORMAL, logger, "The current traffic differs from the last set traffic characteristic by " << ((float)thisSFData.sentCompounds / (float)lastSetData.CompoundspSF -1.0)*100 << " % in compounds and " << ((float)thisSFData.bitsTotal / (float)lastSetData.BitspSF -1.0)*100 << " % in total bits");
                 
                 // The current SF has different characteristic than the last set traffic characteristic
                 NeedsNewEstimatePerAddress[rx] = true;

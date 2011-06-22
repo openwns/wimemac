@@ -118,7 +118,6 @@ namespace wimemac { namespace upperMAC {
         
         //stores the addresses of all the stations served so far and their connection parameters
         std::map<wns::service::dll::UnicastAddress, std::deque<measurementDatapSF> > windowedTrafficPerAddress;
-        std::map<wns::service::dll::UnicastAddress, estimatedTraffic > currentTrafficPerAddress;
         std::map<wns::service::dll::UnicastAddress, estimatedTraffic > lastSetTrafficPerAddress;
         
         std::map<wns::service::dll::UnicastAddress, bool > NeedsNewEstimatePerAddress;

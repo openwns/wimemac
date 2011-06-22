@@ -26,6 +26,8 @@
 ###############################################################################
 
 import openwns.Probe
+import openwns.FUN
+import openwns.pyconfig
 import wimemac.Logger
 
 ################################
@@ -56,5 +58,26 @@ class ForwardingE2EWindowProbe(openwns.Probe.WindowProbeBus):
         self.logger = openwns.logger.Logger("wimemac", "ForwardingE2EWindowProbe", True, parentLogger)
         self.logger.level = 2
 	
+class IncomingDelayProbeConfig(object):
+    maxAllowedDelay = 0.5
+    minGoodPercentage = 0.95
+	
+class IncomingDelayProbe(openwns.FUN.FunctionalUnit):
+    __plugin__ = 'wimemac.helper.IncomingDelayProbe'
+    
+    upperConvergenceCommandName = None
+    maxAllowedDelay = None
+    minGoodPercentage = None
+    logger = None
+    
+    def __init__(self, functionalUnitName, commandName, upperConvergenceCommandName, maxAllowedDelay, minGoodPercentage, parentLogger = None, **kw):
+        super(IncomingDelayProbe, self).__init__(functionalUnitName=functionalUnitName, commandName=commandName)
+        self.logger = openwns.logger.Logger("wimemac", "IncomingDelayProbe", True, parentLogger)
+        self.upperConvergenceCommandName = upperConvergenceCommandName
+        self.maxAllowedDelay = maxAllowedDelay
+        self.minGoodPercentage = minGoodPercentage
+        openwns.pyconfig.attrsetter(self, kw)
+
+
 
 

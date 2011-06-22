@@ -57,6 +57,12 @@ namespace wimemac { namespace lowerMAC {
         virtual void
         setCompoundType(const wns::ldk::CommandPool* commandPool, const CompoundType type) = 0;
         
+        /** @brief Returns the MAC address of this transceiver. Do not use the
+         * similar function from the dll::UpperConvergence - this will give you
+         * the MAC address of the complete Layer2 */
+        virtual wns::service::dll::UnicastAddress
+        getMACAddress() const = 0;
+        
         /** @brief Get the PhyMode from a compound*/
         virtual wimemac::convergence::PhyMode
         getPhyMode(const wns::ldk::CommandPool* commandPool) const = 0;
