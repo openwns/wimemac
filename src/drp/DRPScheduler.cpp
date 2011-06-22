@@ -434,20 +434,21 @@ DRPScheduler::startPCAtransmission()
 
     wns::simulator::Time timeUntilNextDRPReservation = getTimeUntilNextDRPReservation();
 
-    if(timeUntilNextDRPReservation > 0)
+    ActivePCArx = getNextReceiver();
+    if(ActivePCArx != wns::service::dll::UnicastAddress())
     {
-        ActivePCArx = getNextReceiver();
-        if(ActivePCArx != wns::service::dll::UnicastAddress())
+        
+        if(PCABuffer.find(ActivePCArx) == PCABuffer.end())
+        {
+            MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: Create a new PCA buffer for " << ActivePCArx <<" and started buffering ");
+            PCABuffer[ActivePCArx] = new TempSendBuffer(DRPQueues,ActivePCArx,this,logger);
+        }
+        
+        if(timeUntilNextDRPReservation > 0)
         {
             isPCAtransmissionActive = true;
 
             MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: Beginning a PCA transmission for target " << ActivePCArx << " with maximum duration of " << timeUntilNextDRPReservation);
-
-            if(PCABuffer.find(ActivePCArx) == PCABuffer.end())
-            {
-                MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: Create a new PCA buffer for " << ActivePCArx <<" and started buffering ");
-                PCABuffer[ActivePCArx] = new TempSendBuffer(DRPQueues,ActivePCArx,this,logger);
-            }
 
             //Bit bits = DRPQueues->getHeadOfLinePDUbits(nextPCAReceiver);
             wns::simulator::Time txOPDuration = timeUntilNextDRPReservation;
@@ -458,13 +459,18 @@ DRPScheduler::startPCAtransmission()
             PCABuffer[ActivePCArx]->SetTxopDuration(txOPDuration);
             if(PCABuffer[ActivePCArx]->StartBuffering())
                 successfulStart = true;
-
         }
-        else MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: There are no compounds for any target!");
-     }
-     else MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: There is not enough time until the next DRP reservation starts!");
-
-     return successfulStart;
+        else
+        {
+            MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: There is not enough time until the next DRP reservation starts!");
+            // Inform DCF about waiting transmissions
+            MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: Inform DCF about waiting transmissions with NumOfTransmissions : " << PCABuffer[ActivePCArx]->GetNumOfRetransmissions() +1);
+            friends.dcf->waitingTransmissions(PCABuffer[ActivePCArx]->GetNumOfRetransmissions() +1);
+        }
+    }
+    else MESSAGE_SINGLE(NORMAL, logger, "DRPScheduler: There are no compounds for any target!");
+    
+    return successfulStart;
 }
 
 wns::simulator::Time
