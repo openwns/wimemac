@@ -66,14 +66,17 @@ class IncomingDelayProbe(openwns.FUN.FunctionalUnit):
     __plugin__ = 'wimemac.helper.IncomingDelayProbe'
     
     upperConvergenceCommandName = None
+    forwardingCommandName = None
     maxAllowedDelay = None
     minGoodPercentage = None
     logger = None
     
-    def __init__(self, functionalUnitName, commandName, upperConvergenceCommandName, maxAllowedDelay, minGoodPercentage, parentLogger = None, **kw):
+    def __init__(self, functionalUnitName, commandName, upperConvergenceCommandName, forwardingCommandName, maxAllowedDelay, 
+                 minGoodPercentage, parentLogger = None, **kw):
         super(IncomingDelayProbe, self).__init__(functionalUnitName=functionalUnitName, commandName=commandName)
         self.logger = openwns.logger.Logger("wimemac", "IncomingDelayProbe", True, parentLogger)
         self.upperConvergenceCommandName = upperConvergenceCommandName
+        self.forwardingCommandName = forwardingCommandName,
         self.maxAllowedDelay = maxAllowedDelay
         self.minGoodPercentage = minGoodPercentage
         openwns.pyconfig.attrsetter(self, kw)

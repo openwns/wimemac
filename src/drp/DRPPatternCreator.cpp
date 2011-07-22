@@ -29,6 +29,7 @@
 #include <WIMEMAC/drp/DRPPatternCreator.hpp>
 #include <WIMEMAC/lowerMAC/Manager.hpp>
 #include <math.h>
+#include <fstream>
 
 using namespace wimemac::drp;
 
@@ -191,6 +192,7 @@ bool DRPPatternCreator::GetPattern(Vector& ProposedPattern, Vector& ConstraintDR
 
         if(maxPosPattern.conflict != 0)
         {
+            
             ClearConflictArea();
 
             for(int i = 0; i < 256; i++)
@@ -209,6 +211,7 @@ bool DRPPatternCreator::GetPattern(Vector& ProposedPattern, Vector& ConstraintDR
                 if(FindEmptyArea(maxPosPattern.maxProposedPattern, first, last))
                 {
                     MESSAGE_SINGLE(NORMAL, logger, "InitPattern: this area is empty " << nr << " of " << DivideSFintoAreas);
+                    
                     if(!AllocAreaOutside(first,last, AdjSlot))
                     {
                         int block = ceil(double(AdjSlot)/double(mAdjSlot));

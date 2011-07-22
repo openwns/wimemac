@@ -106,6 +106,7 @@ pyconfigs = [
     'wimemac/support/Layer1Config.py',
     'wimemac/support/Transceiver.py',
     'wimemac/support/ScenarioVisualization.py',
+    'wimemac/support/ScenarioFileWriter.py',
     'wimemac/evaluation/__init__.py',
     'wimemac/evaluation/wimemacProbes.py',
     'wimemac/evaluation/constanzeProbes.py',
