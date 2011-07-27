@@ -214,6 +214,6 @@ class ScenarioDrawer(object):
         if len(hopPathFiles) == 0:
             self.picture(pictureNumber)
     def picture(self, i):
-        filename = self.directory + "/Scenario" + str(i) + ".png"
+        filename = self.directory + "/Scenario" + str(i) + ".pdf"
         pylab.grid()
         pylab.savefig(filename)
