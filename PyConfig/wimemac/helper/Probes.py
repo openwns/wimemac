@@ -61,6 +61,7 @@ class ForwardingE2EWindowProbe(openwns.Probe.WindowProbeBus):
 class IncomingDelayProbeConfig(object):
     maxAllowedDelay = 0.5
     minGoodPercentage = 0.95
+    settlingTimeGuard = 0.0
 	
 class IncomingDelayProbe(openwns.FUN.FunctionalUnit):
     __plugin__ = 'wimemac.helper.IncomingDelayProbe'
