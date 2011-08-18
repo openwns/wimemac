@@ -20,7 +20,7 @@ class ScenarioWriter(object):
                 sta_x = self.nodelist[i].mobility.mobility.getCoords().x
                 sta_y = self.nodelist[i].mobility.mobility.getCoords().y
             except:
-                print "Node ID " , i , "cannot be displayed"
+                if i != 0: print "Node ID " , i , "cannot be displayed"
             else:
                 stationPositions.append([sta_x, sta_y])
         
