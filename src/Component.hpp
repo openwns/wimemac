@@ -71,12 +71,6 @@ namespace wimemac {
 		virtual void
 		onWorldCreated();
 
-		/**
-		 * @brief Implements wns::node::component::Interface::onShutdown()
-		 */
-		virtual void
-		onShutdown();
-		//@}
 	protected:
 		/**
 		 * @brief Announces the services
