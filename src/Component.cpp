@@ -112,9 +112,4 @@ Component::onWorldCreated()
 {
 } // onWorldCreated
 
-void
-Component::onShutdown()
-{
-} // onShutdown
-
 
