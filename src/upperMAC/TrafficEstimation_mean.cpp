@@ -268,7 +268,8 @@ TrafficEstimation_mean::periodically()
             // check if traffic differs from estimated traffic
             measurementDatapSF thisSFData = (*it).second.back();
             estimatedTraffic lastSetData = lastSetTrafficPerAddress[rx];
-            if((thisSFData.sentCompounds > lastSetData.CompoundspSF*1.05) || (thisSFData.bitsTotal > lastSetData.BitspSF*1.05))
+            //if((thisSFData.sentCompounds > lastSetData.CompoundspSF*1.05) || (thisSFData.bitsTotal > lastSetData.BitspSF*1.05))
+            if((thisSFData.sentCompounds > lastSetData.CompoundspSF*1.05))
             {
                 MESSAGE_SINGLE(NORMAL, logger, "ThisSF SentCompd " << thisSFData.sentCompounds << " | LastSet ComppSF " << lastSetData.CompoundspSF);
                 //MESSAGE_SINGLE(NORMAL, logger, "ThisSF TotalBits " << thisSFData.bitsTotal << " | LastSet BitspSF " << lastSetData.BitspSF);
