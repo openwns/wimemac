@@ -88,6 +88,9 @@ class ECMA368(PhyModesDeliverer):
         
     def getLowest(self):
         return(makeBasicPhyMode(100, dBm(-80.8) ,dB(6.0)))
+        
+    def getPhyMode(self, phymode):
+        return(makeBasicPhyMode(self.MCSs[phymode].nIBP6S, self.MCSs[phymode].minRX, self.MCSs[phymode].minSINR))
 
 #def makeBasicPhyMode(modulation, codingRate, minSINR):
 def makeBasicPhyMode(nIBP6S, minRX, minSINR):

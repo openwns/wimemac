@@ -39,6 +39,9 @@
 #include <WNS/distribution/Uniform.hpp>
 #include <WNS/simulator/Time.hpp>
 #include <WNS/events/CanTimeout.hpp>
+#include <WNS/ldk/fun/FUN.hpp>
+#include <WNS/probe/bus/ContextCollector.hpp>
+
 
 namespace wimemac { namespace lowerMAC { namespace timing {
 
@@ -106,6 +109,8 @@ namespace wimemac { namespace lowerMAC { namespace timing {
 
         void
         OnDRPreservationChange(bool isDRPreservationOn_);
+        
+        void setFun(wns::ldk::fun::FUN* fun);
     private:
 
         void startNewBackoffCountdown(wns::simulator::Time ifsDuration);
@@ -131,6 +136,9 @@ namespace wimemac { namespace lowerMAC { namespace timing {
 
         bool isDRPreservationOn;
         bool wasChannelLastSensedBusyDuringDRP;
+        
+        wns::probe::bus::ContextCollectorPtr cwProbe;
+        wns::ldk::fun::FUN* fun_;
 
         const int cwMin;
         const int cwMax;

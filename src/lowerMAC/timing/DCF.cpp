@@ -73,6 +73,8 @@ void DCF::onFUNCreated()
         // backoff gets notified of failed receptions
         backoff.wns::Observer<wimemac::convergence::IRxStartEnd>::startObserving
             (getFUN()->findFriend<wimemac::convergence::RxStartEndNotification*>(rxStartEndName));
+            
+        backoff.setFun(getFUN());
     }
 } // DCF::onFUNCreated
 

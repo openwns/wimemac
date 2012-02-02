@@ -31,6 +31,11 @@
 #include <WNS/Assure.hpp>
 #include <boost/bind.hpp>
 
+#include <WNS/ldk/fun/FUN.hpp>
+#include <WNS/ldk/Layer.hpp>
+#include <WNS/probe/bus/ContextProviderCollection.hpp>
+#include <WNS/probe/bus/ContextCollector.hpp>
+
 using namespace wimemac::lowerMAC::timing;
 
 Backoff::Backoff(BackoffObserver* _backoffObserver, const wns::pyconfig::View& _config) :
@@ -63,6 +68,21 @@ Backoff::Backoff(BackoffObserver* _backoffObserver, const wns::pyconfig::View& _
 
 Backoff::~Backoff()
 {
+}
+
+void
+Backoff::setFun(wns::ldk::fun::FUN* fun)
+{
+    fun_ = fun;
+
+    wns::probe::bus::ContextProviderCollection* cpcParent = 
+        &fun->getLayer()->getContextProviderCollection();
+
+    wns::probe::bus::ContextProviderCollection cpc(cpcParent);
+
+    cwProbe = wns::probe::bus::ContextCollectorPtr(
+        new wns::probe::bus::ContextCollector(cpc, "wimemac.Backoff.cw"));
+
 }
 
 wns::simulator::Time Backoff::finishedAt() const
@@ -138,6 +158,7 @@ Backoff::onTimeout()
             assure(counter>=0, "counter too small");
             assure(counter<=cw, "counter too big");
 
+            cwProbe->put(counter);
             MESSAGE_SINGLE(NORMAL, logger, "AIFS waited, start new Backoff with counter " << counter << ", cw is " << cw);
         }
         else
