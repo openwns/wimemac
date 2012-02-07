@@ -116,6 +116,8 @@ class Config():
     channelModel = 2
     defPhyMode = 7
     maxPER = 0.03
+    pcaPERmax = 0.25
+    pcaPERmin = 0.01
     patternPEROffset = 0.0
     isDroppingAfterRetr = -1
     deleteQueues = False
