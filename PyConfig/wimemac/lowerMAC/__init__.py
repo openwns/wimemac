@@ -84,7 +84,7 @@ def __getTopBlock__(transceiverAddress, names, config, myFUN, logger, probeLocal
 
     FUs.append(DRPScheduler(functionalUnitName = names['drpScheduler'],
                             commandName = names['drpSchedulerCMD'],
-                            queuesize = 1E9,
+                            queuesize = config.queuesize,
                             frameduration = 256*256E-6,
                             managerName = names['manager'] + str(transceiverAddress),
                             dcfName = 'DCF' + str(transceiverAddress),

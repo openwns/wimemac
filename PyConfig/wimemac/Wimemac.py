@@ -115,6 +115,7 @@ class Config():
     numberOfStations = None
     channelModel = 2
     defPhyMode = 7
+    queuesize = 2E6
     maxPER = 0.03
     pcaPERmax = 0.25
     pcaPERmin = 0.01
