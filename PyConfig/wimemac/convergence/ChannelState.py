@@ -42,7 +42,7 @@ class ChannelStateConfig(object):
     useOwnRx = True
 
     rawEnergyThreshold = dBm(-62)
-    phyCarrierSenseThreshold = dBm(-75)
+    phyCarrierSenseThreshold = dBm(-78.25)  # min signal sensitivity of -80.8dBm + -81.77dBm thermal noise and noise figure
 
     """ To probe the channel busy fraction """
     channelBusyFractionMeasurementPeriod = 0.5
