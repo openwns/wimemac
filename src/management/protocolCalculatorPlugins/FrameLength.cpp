@@ -55,7 +55,6 @@ FrameLength::getPreamble(std::string pm) const
 Bit
 FrameLength::pad(Bit msduFrameSize, int nIBP6S) const
 {
-	double nFrame = 6 * ceil( double(msduFrameSize + this->FCS + this->tail)  / nIBP6S);
-	double nPad = nFrame / 6 * nIBP6S - msduFrameSize - this->FCS - this->tail;
-	return (nPad);
+    double nPad = nIBP6S * ceil(double(msduFrameSize + this->FCS + this->tail) / nIBP6S) - (msduFrameSize + this->FCS + this->tail);
+    return (nPad);
 }

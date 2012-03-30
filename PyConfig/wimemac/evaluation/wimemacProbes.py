@@ -74,6 +74,12 @@ def installEvaluation(sim, loggingStations, configuration):
                          description = "numberOfMAS",
                          contextKeys = []))
 
+        sourceName = 'wimemac.bb.numberOfNeighbours'
+        node = openwns.evaluation.createSourceNode(sim, sourceName)
+        node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
+        node.getLeafs().appendChildren(SettlingTimeGuard(configuration.settlingTimeGuard))
+        node.getLeafs().appendChildren(Moments(name = sourceName, description = 'numberOfNeighbours'))
+
     
     if configuration.createMCSProbe:
         sourceName = 'wimemac.manager.mcs'
