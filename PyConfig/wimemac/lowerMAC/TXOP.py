@@ -36,6 +36,7 @@ class TXOPConfig(object):
     maximumACKDuration = 13.125E-6
 
     txopLimit = 1024E-6
+    #txopLimit = 124E-6
     singleReceiver = False
     """ when True, continuous TXOP operation, else TXOP has to be triggered with startTXOP() """
     maxOutTXOP = False
