@@ -74,13 +74,6 @@ def installEvaluation(sim, loggingStations, configuration):
                          description = "numberOfMAS",
                          contextKeys = []))
 
-        sourceName = 'wimemac.bb.numberOfNeighbours'
-        node = openwns.evaluation.createSourceNode(sim, sourceName)
-        node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
-        node.getLeafs().appendChildren(SettlingTimeGuard(configuration.settlingTimeGuard))
-        node.getLeafs().appendChildren(Moments(name = sourceName, description = 'Number Of Competing Neighbours (incl. STA itself)'))
-
-    
     if configuration.createMCSProbe:
         sourceName = 'wimemac.manager.mcs'
         node = openwns.evaluation.createSourceNode(sim, sourceName)
@@ -108,14 +101,6 @@ def installEvaluation(sim, loggingStations, configuration):
                          name = "PER_TimeSeries", 
                          description = "calculated packet error rate due to SINR",
                          contextKeys = []))               
-                         
-        sourceName = 'wimemac.drpscheduler.perProbe_real'
-        node = openwns.evaluation.createSourceNode(sim, sourceName)
-        node.appendChildren(Separate(by = 'wns.node.Node.id', forAll = loggingStations, format="wns.node.Node.id%d"))
-        leafs = node.getLeafs()
-        node.getLeafs().appendChildren(SettlingTimeGuard(configuration.settlingTimeGuard))
-        node.getLeafs().appendChildren(Moments(name = sourceName, description = 'packet error rate'))
-        
 
     if configuration.createTimeseriesProbes == True:
         sourceName = 'wimemac.traffic.incoming.throughput'
