@@ -172,10 +172,10 @@ void FrameSynchronization::processPreamble(const wns::ldk::CompoundPtr& compound
         assure(lastFrameEnd >= wns::simulator::getEventScheduler()->getTime(), "State is garbled, but lastFrameEnd is over");
         //if the preamble and the header are decoded well and the crc check is passed, a threshold of slgCapture prevents the station from 
         //synchronizing to the communication partner in case of a DRP connection
-        if(friends.manager-> getDRPchannelAccess() == true )
-        {
-          if(crcOk == true) captureThreshold = idleCapture;
-        }
+        //if(friends.manager-> getDRPchannelAccess() == true )
+        //{
+        if(crcOk == true) captureThreshold = idleCapture;
+        //}
         else
         {         
           captureThreshold = slgCapture;
