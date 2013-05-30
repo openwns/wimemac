@@ -144,7 +144,7 @@ typedef std::vector<bool> Vector;
             struct BPallocation
             {
               BPallocation():
-              source(wns::service::dll::UnicastAddress::UnicastAddress())
+              source(wns::service::dll::UnicastAddress())
               {}
               
               wns::service::dll::UnicastAddress source;

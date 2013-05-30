@@ -838,7 +838,7 @@ BeaconEvaluator::ExamineBeaconPeriodOccupancy(wns::service::dll::UnicastAddress 
   
   int BeaconSlot = getBeaconSlot();
   
-  wns::service::dll::UnicastAddress inValidAddress = wns::service::dll::UnicastAddress::UnicastAddress();
+  wns::service::dll::UnicastAddress inValidAddress = wns::service::dll::UnicastAddress();
   
   for (int i = 0 ; i < BeaconCommand->peer.BPOIE.IE.size();i++)
   {
