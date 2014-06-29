@@ -388,7 +388,7 @@ DRPManager::MergePatterns()
     Vector::iterator it1 = tmpDRPMergeMap.begin();
     Vector::iterator it2 = DRPAllocMap.begin();
 
-    for(it1, it2;  it1!= tmpDRPMergeMap.end() || it2 != DRPAllocMap.end() ; ++it1, ++it2)
+    for(;  it1!= tmpDRPMergeMap.end() || it2 != DRPAllocMap.end() ; ++it1, ++it2)
     {
         *it2 = *it1 | *it2;
     }

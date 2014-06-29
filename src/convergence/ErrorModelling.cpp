@@ -287,7 +287,7 @@ void ErrorModelling::processIncoming(const wns::ldk::CompoundPtr& compound)
     ErrorModellingCommand* emc = activateCommand(compound->getCommandPool());
     emc->local.sinr = sinr_;
 
-    float pmean_ = NULL;
+    float pmean_ = 0;
 
     SNR2PmeanMap* snr2pmeanMap_ = snr2pmeanReg_.find(phyMode_.getMCS());
 

@@ -288,7 +288,7 @@ DRPmap::UpdateDRPmap(Vector UpdateMap, Vector& UpdatedMap)
     Vector::iterator it1 = UpdateMap.begin();
     Vector::iterator it2 = UpdatedMap.begin();
 
-    for(it1, it2;  it1!=UpdateMap.end() || it2 != UpdatedMap.end() ; ++it1, ++it2)
+    for(;  it1!=UpdateMap.end() || it2 != UpdatedMap.end() ; ++it1, ++it2)
     {
         *it2 = *it1 | *it2;
     }
@@ -305,7 +305,7 @@ DRPmap::PossiblePattern(Vector CompareDRPMap)
     Vector::iterator it4 = CompareDRPMap.begin();
     
 
-    for(it1, it2, it3, it4;  it1!=globalHardDRPmap.end() || it2 != globalSoftDRPmap.end() || it3 != _pendingDRPmap.end() || it4 != CompareDRPMap.end(); ++it1, ++it2,++it3, ++it4)
+    for(;  it1!=globalHardDRPmap.end() || it2 != globalSoftDRPmap.end() || it3 != _pendingDRPmap.end() || it4 != CompareDRPMap.end(); ++it1, ++it2,++it3, ++it4)
     {
         if((*it1 || *it2 || *it3) && *it4 == true)
             return false;

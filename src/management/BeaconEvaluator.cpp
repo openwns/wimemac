@@ -568,10 +568,15 @@ BeaconEvaluator::UpdateDRPManager(wns::service::dll::UnicastAddress rx, int Comp
 bool
 BeaconEvaluator::CreateBPOIE(BeaconCommand* BeaconCommand)
 {
-  
-  ExamineBeaconPeriodOccupancy(friends.manager->getMACAddress(),BeaconCommand);
-  BeaconCommand->peer.BPOIE.BPsize = BPoccupancy.size();
-  BeaconCommand->peer.BPOIE.IE = BPoccupancy;
+    bool HasCreated = false;
+
+    ExamineBeaconPeriodOccupancy(friends.manager->getMACAddress(),BeaconCommand);
+    if(BeaconCommand) {
+        BeaconCommand->peer.BPOIE.BPsize = BPoccupancy.size();
+        BeaconCommand->peer.BPOIE.IE = BPoccupancy;
+    }
+
+    return HasCreated;
 }
 
 
